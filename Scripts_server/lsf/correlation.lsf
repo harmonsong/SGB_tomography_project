@@ -1,0 +1,18 @@
+#!/bin/bash
+#BSUB -J LargeJob                   ### set the job name
+#BSUB -q long                       ### specify queue
+#BSUB -n 16                         ### ask for number of cores (default:1)
+#BSUB -R "span[ptile=16]"           ### ask for 20 cores per node
+### #BSUB -R "hname!=c004"          ### exclude the host c004
+#BSUB -W 168:00                      ### set walltime limit: hh:mm
+#BSUB -oo lsf_out/std_%J.out                ### specify the output and error file. %J is the job-id
+#BSUB -eo lsf_out/std_%J.err                ### -o and -e mean append, -oo and -eo mean overwrite
+
+# here follow the commands you want to execute
+# load the necessary modules
+# NOTE: this is just an example, check with the available modules 15 
+
+### This uses the LSB_DJOB_NUMPROC to assign all the cores reserved
+### This is a very basic syntax.
+
+python -u "1_1_correlation_all.py"

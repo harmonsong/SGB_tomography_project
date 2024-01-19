@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -N Resample
+#PBS -q workq
+#PBS -l nodes=3:ppn=80
+#PBS -l walltime=200:00:00
+#PBS -o pbs_out/resample_output.log
+#PBS -e pbs_out/resample_error.log
+
+cd /home/songsh/git_repo/F-J_workflow/San_Jasinto/ #F-J server
+
+source activate ccfj
+python -u "1-1_resample.py"

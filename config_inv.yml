@@ -1,0 +1,71 @@
+# reference model
+#model_init: output_FJSJ_09-02/inv_dispernet/initial_model.txt
+model_init: initial/initial_model_
+
+
+# wave type: rayleigh or love
+wave_type: rayleigh
+
+# half_width for vs, so the bounds of vs:
+# [vs_init - half_width, vs_init + half_width]
+init_half_width: 0.4
+inv_half_width: 0.8
+
+# method of generating initial model
+# ascend or random
+init_method: random
+
+#empirical_relation: brocher
+empirical_relation: user-defined
+#empirical_relation: gardner
+
+# data
+# column 1 | column 2 | column 3
+# freq(Hz) | phase velocity (km/s) | mode (start from 0)
+#dir_data: output_FJSJ_09-02/inv_dispernet/data
+dir_data: data
+# data: roots.txt
+# weights of mode used for inversion
+weights_mode: 
+  0: 3.0
+  1: 1.0
+  2: 1.0
+  3: 1.0
+
+# regularization
+# exp, tr1, tr0, tr2
+reg_method: tr1
+
+# regularization
+smooth:
+  factor: 0.5
+
+  zmin: 0.0
+  zmax: 100.0
+  dmin: 10.0
+  dmax: 30.0
+
+# logging
+file_logging: record.log
+
+# output
+dir_output: inversion/
+
+
+  #option_bfgs:
+  #    gtol: 1.0e-8
+  #    ftol: 1.0e-10
+
+plot:
+    percentage_show: 50
+    zmax: 0.1
+    vs_lim: [0.1, 1.6]
+    #model_data: output_FJSJ_09-02/inv_dispernet/initial_model.txt
+    #model_data: initial_model.txt
+
+l-curve:
+  dir_out: L-curve
+  # 10^a
+  amin: -6.0
+  amax: 1.0
+  na: 20

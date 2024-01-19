@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -N EGF-filter
+#PBS -q workq
+#PBS -l nodes=1:ppn=80
+#PBS -l walltime=200:00:00
+#PBS -o pbs_out/timewindow-filter_output.log
+#PBS -e pbs_out/timewindow-filter_error.log
+
+cd /home/songsh/git_repo/F-J_workflow/San_Jasinto/ #F-J server
+
+source activate ccfj
+python -u "3-1-4-2_EGFs_timewindow-filter.py"
