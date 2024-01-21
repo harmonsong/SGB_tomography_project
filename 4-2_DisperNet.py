@@ -4,7 +4,7 @@ import os
 import sys
 import shutil
 import yaml
-sys.path.append('../toollib_DisperNet_local/')
+sys.path.append('../tools_F-J/toollib_DisperNet_local/')
 #conda import dispernet_local as dispernet
 import dispernet_local_latest as dispernet
 import pandas as pd
