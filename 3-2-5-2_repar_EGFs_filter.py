@@ -141,5 +141,5 @@ with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
 # %%
-nThreads = 40
+nThreads = 160
 remove_zorocor(v_tag,t0,a,dir_project,nThreads=nThreads)
