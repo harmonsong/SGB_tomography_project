@@ -90,7 +90,7 @@ for key in key_ds:
 
 fmax = 20
 fmin = 0.5
-flag_repick = 0
+flag_repick = 1
 inputfile = dir_inv + 'h5/'
 outputfile = dir_inv + 'data/'
 f = info_basic_bi['f']

@@ -46,6 +46,7 @@ info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting 
 
 #%%
 key_subworks = info_basic['key_subworks']
+#key_subworks = key_subworks[261:300]
 #key_subworks = ['1']
 
 # %%
