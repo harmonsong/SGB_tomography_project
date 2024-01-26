@@ -5,6 +5,7 @@ import sys
 import shutil
 import yaml
 sys.path.append('../tools_F-J/toollib_DisperNet_local/')
+sys.path.append('../tools_F-J/')
 #conda import dispernet_local as dispernet
 import dispernet_local_latest as dispernet
 import pandas as pd
@@ -53,8 +54,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
 key_ds = info_basic['key_subworks']
-#key_ds  = ['5','185']
-#key_ds = [str(x) for x in range(24,30)]
+key_ds = ['39-03--28']
 
 """
 
