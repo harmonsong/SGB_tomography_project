@@ -14,7 +14,7 @@ from toollib_standard import mathlib
 from toollib_standard import plotlib
 
 #%%
-nThreads = 320
+nThreads = 20
 
 # %%
 with open('a-project.yml', 'r', encoding='utf-8') as f:

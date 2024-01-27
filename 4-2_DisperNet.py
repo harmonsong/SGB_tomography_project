@@ -158,7 +158,7 @@ if os.path.exists(outname_config_fund)==False:
 
 #%%    
 fileList = os.listdir(inputfile)
-num_fileList = [int(file[file.find('--')+2:file.find('.h5')]) for file in fileList]
+num_fileList = [int(file[file.find('_')+1:file.find('--')]) for file in fileList]
 index = np.argsort(num_fileList)
 fileList = np.array(fileList)[index].tolist()
 
