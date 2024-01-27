@@ -156,6 +156,12 @@ if os.path.exists(outname_config)==False:
 if os.path.exists(outname_config_fund)==False:
     shutil.copyfile('config_inv_fund.yml', dir_inv+'config_inv_fund.yml')
 
+#%%    
+fileList = os.listdir(inputfile)
+num_fileList = [int(file[file.find('--')+2:file.find('.h5')]) for file in fileList]
+index = np.argsort(num_fileList)
+fileList = np.array(fileList)[index].tolist()
+
 #%%
 # Run Dispernet
 #dispernet.App(filePath=inputfile, curveFilePath=outputfile,freqSeries=f, trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.12, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
@@ -164,7 +170,7 @@ v_min = 0.01
 flag_partrition = 1
 flag_plot_or = 0
 #dispernet.App(r_flag = r_max,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.8, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
-dispernet.App(info_basic,lon_all,lat_all,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
+dispernet.App(info_basic,lon_all,lat_all,fileList,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
 
 # transfer training
 #dispernet.createTrainSet('./trainSetDAS.h5', inputfile, outputfile)
