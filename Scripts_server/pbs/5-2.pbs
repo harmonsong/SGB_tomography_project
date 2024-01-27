@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N inversion
 #PBS -q workq
-#PBS -l nodes=1:ppn=80
+#PBS -l nodes=2:ppn=80
 #PBS -l walltime=200:00:00
 #PBS -o pbs_out/inversion_output${PBS_JOBID}.log
 #PBS -e pbs_out/inversion_error${PBS_JOBID}.log
@@ -9,14 +9,14 @@
 #set NUMEXPR_MAX_THREADS=160
 
 export Basic_dir="/shdisk/rem2/Harmon/F-J/San/"
-export Data_dir="/project_repartrition/output_repar_01-02/inv_dispernet"
+export Data_dir="/project_repartition_v3.0/output_repar_01-01/inv_dispernet"
 export PBS_O_WORKDIR="${Basic_dir}/${Data_dir}"
 
 
 source activate disba
 
-exe="/home/songsh/git_repo/F-J_workflow/toollib_DisbaCode/inversion.py"
-parameters="--num_init 8 --config config_inv.yml --key select_590_660"
+exe="/home/songsh/git_repo/F-J/tools_F-J/toollib_DisbaCode/inversion.py"
+parameters="--num_init 8 --config config_inv.yml --key select_550_660"
 
 cd ${PBS_O_WORKDIR}
 
@@ -28,4 +28,4 @@ echo "EXE is ${exe}"
 # cat ${PBS_NODEFILE} | uniq -c | awk '{ printf("%s:%s\n", $2, $1); }' > nodelists
 
 # Use mpirun or mpiexec based on your MPI installation
-mpirun -np 80 ${exe} ${parameters}
+mpirun -np 160 ${exe} ${parameters}

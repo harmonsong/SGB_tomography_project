@@ -16,7 +16,7 @@ import yaml
 # Vp: Share 2020 (0.6-2.6) (0-70m)
 
 # %% [markdown]
-flag_project = 1 # 0--regular; 1--repartrition
+flag_project = 1 # 0--regular; 1--repartition
 # %%
 if flag_project == 0:
     with open('a-project.yml', 'r', encoding='utf-8') as f:
@@ -47,9 +47,9 @@ filename_bi = dir_project+'Basic_info.npy'
 info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting dictionary
 
 # %%
-fmin = 0.5
-fmax = 30
-nf = 296
+fmin = 1
+fmax = 20
+nf = 191
 info_basic['for_fmin'] = fmin
 info_basic['for_fmax'] = fmax
 info_basic['for_nf'] = nf
