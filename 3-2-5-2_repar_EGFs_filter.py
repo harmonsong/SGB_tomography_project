@@ -71,6 +71,7 @@ def cut(key_subwork):
     global a
     global dir_project
     global dir_stack
+    global key_subworks_repick
 
     #t = info_basic_bi['t']
     f = info_basic_bi['f']
@@ -81,15 +82,14 @@ def cut(key_subwork):
     inname = str(key_subwork)+'_gather_linear.h5'
     outname = str(key_subwork)+'_gather_timewindow.h5'
 
-
-
-
-    if os.path.exists(dir_stack+outname):
-        print('file exists!')
-        return
     
-
-
+    if key_subwork in key_subworks_repick:
+        if os.path.exists(dir_stack+outname):
+            os.remove(dir_stack+outname)
+        print('remove file: '+outname)
+    elif os.path.exists(dir_stack+outname):
+        print(key_subwork+' file exists!')
+        return
 
 
     ncffile_in = h5py.File(dir_stack + inname,'r')
@@ -113,12 +113,20 @@ def cut(key_subwork):
 
 # %%
 def remove_zorocor(v_tag,t0,a,dir_project,key_subwork_sample = [],nThreads = 1):
+    global key_subworks_repick
+    global key_subworks
     filename = dir_project+'Basic_info.yml'
     with open(filename, 'r', encoding='utf-8') as f:
         info_basic = yaml.load(f.read(), Loader=yaml.FullLoader)
     filename_bi = dir_project+'Basic_info.npy'
     info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting dictionary
     key_subworks = info_basic['key_subworks']
+    
+    if 'key_subworks_repick' in info_basic.keys():
+        key_subworks_repick = info_basic['key_subworks_repick']
+    else:
+        key_subworks_repick = []
+    print(key_subworks_repick)
 
     if key_subwork_sample != []:
         key_subworks = key_subwork_sample
@@ -141,5 +149,5 @@ with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
 # %%
-nThreads = 18
+nThreads = 80
 remove_zorocor(v_tag,t0,a,dir_project,nThreads=nThreads)

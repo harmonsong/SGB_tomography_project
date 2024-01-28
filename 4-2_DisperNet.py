@@ -53,16 +53,8 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][0:3]
-
-"""
-nums_repick =[127,137,231,232,366,384,411,412,456,466,467,489,501,502,503,504,507,508,515,516,519,528,530,532,534,544,545,538,546,573,578,579,581,582,589,591,592,593,597,603,604,616,617,634,635,636,637,640,661,662,664,665,667,668]
-key_ds = []
-for num in nums_repick:
-    tag = str(num)
-    key_ds0 = [key_subwork for key_subwork in info_basic['key_subworks'] if tag == key_subwork[-len(str(tag)):]][0]
-    key_ds.append(key_ds0)
-"""
+key_ds = info_basic['key_subworks']
+key_ds  = info_basic['key_subworks_repick']
     
 """
 

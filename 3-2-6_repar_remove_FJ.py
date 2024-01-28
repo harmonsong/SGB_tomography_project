@@ -46,6 +46,11 @@ info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting 
 
 #%%
 key_subworks = info_basic['key_subworks']
+if 'key_subworks_repick' in info_basic.keys():
+    key_subworks_repick = info_basic['key_subworks_repick']
+else:
+    key_subworks_repick = []
+#print('key_subworks_repick: ', key_subworks_repick)
 #key_subworks = key_subworks[261:300]
 #key_subworks = ['1']
 
@@ -59,6 +64,7 @@ def noise_fj(key_subwork):
     global dir_project
     global c
     global key_subworks
+    global key_subworks_repick
     global dir_stack
     global dir_ds
 
@@ -72,9 +78,18 @@ def noise_fj(key_subwork):
     
     f = info_basic_bi['f']
 
-    if os.path.exists(dir_ds+'ds_'+str(key_subwork)+'.h5'):
-        os.remove(dir_ds+'ds_'+str(key_subwork)+'.h5')
-    h5file = h5py.File(dir_ds+'ds_'+str(key_subwork)+'.h5','w')
+
+    filename = dir_ds + 'ds_'+str(key_subwork)+'.h5'
+    #print(filename)
+    if key_subwork in key_subworks_repick:
+        if os.path.exists(filename):
+            os.remove(filename)
+            print('Remove '+filename)
+    if os.path.exists(filename):
+        print(str(key_subwork)+' exists')
+        return
+
+    h5file = h5py.File(filename,'w')
 
     #print("F-J scan for "+filename+" stack  "+key_subwork)
     """
@@ -144,11 +159,14 @@ for key_subwork in key_subworks:
     #print(1)
     flag_plot += 1
     #print(key_subwork)
-    if os.path.exists(dir_ds+'ds_'+str(key_subwork)+'.h5'):
-        print(str(key_subwork)+' exists')
-        continue
     
     #start0 = time.time()
     noise_fj(key_subwork)
 
 # %%
+"""
+if 'key_subworks_repick' in info_basic.keys():
+    del info_basic['key_subworks_repick']
+    with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
+        yaml.dump(data=info_basic, stream=f, allow_unicode=True)
+"""
