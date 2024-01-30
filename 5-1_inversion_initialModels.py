@@ -161,6 +161,7 @@ elif flag_relation == 3:
     Vp,rho = user_defined(depths,Vs)
 
 # %%
+"""
 plt.plot(Vp,depths,'r',label='Vp')
 plt.plot(Vs,depths,'b',label='Vs')
 plt.plot(rho,depths,'g',label='rho')
@@ -169,6 +170,7 @@ plt.legend()
 plt.gca().invert_yaxis()
 plt.xlim(0,4)
 plt.show()
+"""
 
 # %%
 # write a function to write the initial model as txt file, which seperate by space，with four significant digits
