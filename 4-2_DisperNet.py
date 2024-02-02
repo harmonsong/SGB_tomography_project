@@ -9,6 +9,8 @@ sys.path.append('../tools_F-J/')
 #conda import dispernet_local as dispernet
 import dispernet_local_latest as dispernet
 import pandas as pd
+
+
 #%%
 flag_project = 1 # 0--regular ; 1--repartition
 #%%
@@ -53,7 +55,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][50:100]
+key_ds = info_basic['key_subworks']
 #key_ds = ['13--20-03','22--29-03','28--35-03','41--49-03']
 #key_ds  = info_basic['key_subworks_repick']
     
@@ -89,7 +91,7 @@ for key in key_ds:
 
 #%%
 
-fmax = 20
+fmax = 30
 fmin = 0.5
 flag_repick = 1
 inputfile = dir_inv + 'h5/'

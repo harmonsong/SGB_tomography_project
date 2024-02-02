@@ -48,8 +48,8 @@ info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting 
 
 # %%
 fmin = 1
-fmax = 20
-nf = 191
+fmax = 30
+nf = 291
 info_basic['for_fmin'] = fmin
 info_basic['for_fmax'] = fmax
 info_basic['for_nf'] = nf
@@ -138,7 +138,7 @@ def user_defined(z, vs):
 #N = 200
 #dz = 0.0015  
 N = 50
-dz = 0.01
+dz = 0.006
 #dz = 0.002
 flag_relation = 3
 
