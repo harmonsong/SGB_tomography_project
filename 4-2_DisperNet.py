@@ -6,7 +6,7 @@ import shutil
 import yaml
 sys.path.append('../tools_F-J/toollib_DisperNet_local/')
 sys.path.append('../tools_F-J/')
-#conda import dispernet_local as dispernet
+from toollib_standard import plotlib
 import dispernet_local_latest as dispernet
 import pandas as pd
 
@@ -113,6 +113,8 @@ if flag_repick == 1:
         #amp_or = data['ds_linear'][:][0][:,f<fmax]
         amp = data['ds_remove'][:][0][:,np.logical_and(f>fmin,f<fmax)]
         amp_or = data['ds_linear'][:][0][:,np.logical_and(f>fmin,f<fmax)]
+        amp = plotlib.smooth_ds(amp)
+        amp_or = plotlib.smooth_ds(amp_or)
         outname = inputfile+'ds_'+str(key) +'.h5'
         data.close()
         dispernet.save2h5(amp, f[np.logical_and(f>fmin,f<fmax)], c,fileName=outname,spectrum_or = amp_or)
