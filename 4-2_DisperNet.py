@@ -55,7 +55,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][0:100]
+key_ds = info_basic['key_subworks'][500:]
 #key_ds = ['13--20-03','22--29-03','28--35-03','41--49-03']
 #key_ds  = info_basic['key_subworks_repick']
     
@@ -92,7 +92,9 @@ for key in key_ds:
 #%%
 
 fmax = 30
-fmin = 0.5
+fmin = 1
+cmax = 2
+cmin = 0.25
 flag_repick = 1
 inputfile = dir_inv + 'h5/'
 outputfile = dir_inv + 'data/'
@@ -111,13 +113,17 @@ if flag_repick == 1:
         #c = data['c'][:]
         #amp = data['ds_remove'][:][0][:,f<fmax]
         #amp_or = data['ds_linear'][:][0][:,f<fmax]
-        amp = data['ds_remove'][:][0][:,np.logical_and(f>fmin,f<fmax)]
-        amp_or = data['ds_linear'][:][0][:,np.logical_and(f>fmin,f<fmax)]
-        amp = plotlib.smooth_ds(amp)
-        amp_or = plotlib.smooth_ds(amp_or)
+        ds_remove = data['ds_remove'][:][0]
+        ds_linear = data['ds_linear'][:][0]
+        amp = plotlib.smooth_ds(ds_remove)
+        amp_or = plotlib.smooth_ds(ds_linear)
+        amp = amp[:,np.logical_and(f>fmin,f<fmax)]
+        amp = amp[np.logical_and(c>cmin,c<cmax),:]
+        amp_or = amp_or[:,np.logical_and(f>fmin,f<fmax)]
+        amp_or = amp_or[np.logical_and(c>cmin,c<cmax),:]
         outname = inputfile+'ds_'+str(key) +'.h5'
         data.close()
-        dispernet.save2h5(amp, f[np.logical_and(f>fmin,f<fmax)], c,fileName=outname,spectrum_or = amp_or)
+        dispernet.save2h5(amp, f[np.logical_and(f>fmin,f<fmax)], c[np.logical_and(c>cmin,c<cmax)],fileName=outname,spectrum_or = amp_or)
 
 #%%
 #old_curve_path = 'oldData/disp_data_15-01/'

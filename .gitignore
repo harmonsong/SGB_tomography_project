@@ -11,6 +11,8 @@ tempCodeRunnerFile*
 
 project*
 
+*.npy
+
 *.so
 *test*
 
