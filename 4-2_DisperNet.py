@@ -55,7 +55,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks']
+key_ds = info_basic['key_subworks'][0:100]
 #key_ds = ['13--20-03','22--29-03','28--35-03','41--49-03']
 #key_ds  = info_basic['key_subworks_repick']
     
