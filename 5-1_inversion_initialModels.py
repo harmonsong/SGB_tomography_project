@@ -71,6 +71,9 @@ if os.path.exists(old_curve_path):
 
 # %%
 dir_file = dir_project + info_basic['dir_inv_dispernet'] + 'initial/'
+dir_image = dir_project + info_basic['dir_inv_dispernet'] + 'initial_model/'
+if os.path.exists(dir_image) == False:
+    os.makedirs(dir_image)
 key_subworks = info_basic['key_subworks']
 #key_subworks = [str(i) for i in range(0,19)]
 key_subworks
@@ -164,26 +167,28 @@ elif flag_relation == 3:
     Vp,rho = user_defined(depths,Vs)
 
 # %%
-"""
-plt.plot(Vp,depths,'r',label='Vp')
-plt.plot(Vs,depths,'b',label='Vs')
-plt.plot(rho,depths,'g',label='rho')
-plt.legend()
-# 翻转y轴
-plt.gca().invert_yaxis()
-plt.xlim(0,4)
-plt.show()
-"""
+def plot_initial(Vp,Vs,rho,depths,tag):
+    plt.figure(figsize=(8,6))
+    plt.plot(Vp,depths,'r',label='Vp')
+    plt.plot(Vs,depths,'b',label='Vs')
+    plt.plot(rho,depths,'g',label='rho')
+    plt.legend()
+    # 翻转y轴
+    plt.gca().invert_yaxis()
+    plt.xlim(0,4)
+    plt.savefig(dir_image+'initial_model_'+str(tag)+'.png')
+    plt.close()
 
 # %%
 # write a function to write the initial model as txt file, which seperate by space，with four significant digits
-def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,key_subwork):
-    with open(dir_file+'/initial_model_'+key_subwork+'.txt','w') as f:
+def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
+    with open(dir_file+'/initial_model_'+str(tag)+'.txt','w') as f:
         for i in range(len(layers)):
             f.write('{} {:.4f} {:.4f} {:.4f} {:.4f}\n'.format(int(layers[i]),depths[i],Vp[i],Vs[i],rho[i]))
 
 # %%
-for key_subwork in key_subworks:
-    write_initial_model(dir_file,layers,depths,Vp,Vs,rho,key_subwork)
-
-
+tag = 1
+flag_plot = 0
+write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
+if flag_plot == 1:
+    plot_initial(Vp,Vs,rho,depths,tag)

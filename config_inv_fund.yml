@@ -1,6 +1,6 @@
 # reference model
 #model_init: output_FJSJ_09-02/inv_dispernet/initial_model.txt
-model_init: initial/initial_model_
+model_init: initial/initial_model_1
 
 
 # wave type: rayleigh or love
