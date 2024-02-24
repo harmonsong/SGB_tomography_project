@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import os
 import yaml
 
+# cd /shdisk/rem2/Harmon/F-J/San/project_repartition_v4.0/output_repar_v9.2_01-01/inv_dispernet/
+# mpirun -np 60 /home/songsh/git_repo/F-J/tools_F-J/toollib_DisbaCode/inversion.py --num_init 10  --config config_inv.yml --key select_50_60
+
 # %% [markdown]
 # ### Parameters
 
