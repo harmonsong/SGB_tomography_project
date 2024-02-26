@@ -71,7 +71,7 @@ if os.path.exists(old_curve_path):
 
 # %%
 dir_file = dir_project + info_basic['dir_inv_dispernet'] + 'initial/'
-dir_image = dir_project + info_basic['dir_inv_dispernet'] + 'initial_model/'
+dir_image = dir_project + info_basic['dir_image'] + 'initial_model/'
 if os.path.exists(dir_image) == False:
     os.makedirs(dir_image)
 key_subworks = info_basic['key_subworks']
@@ -177,7 +177,7 @@ def plot_initial(Vp,Vs,rho,depths,tag):
     plt.gca().invert_yaxis()
     plt.xlim(0,4)
     plt.savefig(dir_image+'initial_model_'+str(tag)+'.png')
-    plt.close()
+    #plt.close()
 
 # %%
 # write a function to write the initial model as txt file, which seperate by space，with four significant digits
@@ -188,7 +188,7 @@ def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
 
 # %%
 tag = 1
-flag_plot = 0
+flag_plot = 1
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:
     plot_initial(Vp,Vs,rho,depths,tag)

@@ -55,8 +55,8 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][0:50]
-#key_ds = ['13--20-03','22--29-03','28--35-03','41--49-03']
+key_ds = info_basic['key_subworks'][:3]
+#key_ds = ['107--18-06']
 #key_ds  = info_basic['key_subworks_repick']
     
 """
@@ -173,7 +173,7 @@ v_min = 0.01
 flag_partrition = 1
 flag_plot_or = 0
 #dispernet.App(r_flag = r_max,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.8, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
-dispernet.App(info_basic,lon_all,lat_all,fileList,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
+dispernet.App(info_basic,lon_all,lat_all,fileList,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.03, autoT=True, url='http://10.20.64.63:8514')
 
 # transfer training
 #dispernet.createTrainSet('./trainSetDAS.h5', inputfile, outputfile)
