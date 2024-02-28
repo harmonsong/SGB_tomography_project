@@ -143,8 +143,8 @@ def user_defined(z, vs):
 #dz = 0.006
 #N = 200
 #dz = 0.0015  
-N = 50
-dz = 0.006
+N = 100
+dz = 0.002
 #dz = 0.002
 flag_relation = 3
 
@@ -187,7 +187,7 @@ def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
             f.write('{} {:.4f} {:.4f} {:.4f} {:.4f}\n'.format(int(layers[i]),depths[i],Vp[i],Vs[i],rho[i]))
 
 # %%
-tag = 1
+tag = 2
 flag_plot = 1
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:

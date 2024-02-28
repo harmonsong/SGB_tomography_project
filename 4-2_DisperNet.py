@@ -55,7 +55,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][:3]
+key_ds = info_basic['key_subworks'][0:10]
 #key_ds = ['107--18-06']
 #key_ds  = info_basic['key_subworks_repick']
     
@@ -160,10 +160,40 @@ if os.path.exists(outname_config_fund)==False:
     shutil.copyfile('config_inv_fund.yml', dir_inv+'config_inv_fund.yml')
 
 #%%    
+"""
 fileList = os.listdir(inputfile)
 num_fileList = [int(file[file.find('_')+1:file.find('--')]) for file in fileList]
 index = np.argsort(num_fileList)
 fileList = np.array(fileList)[index].tolist()
+"""
+# sort fileList based on location
+fileList_or = os.listdir(inputfile)
+key_ds = [file[file.find('_')+1:file.find('.h5')] for file in fileList_or]
+loc_ds = {}
+for key in key_ds:
+    loc_ds[key] = [0,0]
+    filePath = dir_project + info_basic['dir_partition'] + str(key) +'.txt'
+    station,lat,lon = np.loadtxt(filePath,dtype = 'str',unpack=True)
+    lat = lat.tolist()
+    lon = lon.tolist()
+    lat_centroid = np.mean(np.array(lat).astype(float))
+    lon_centroid = np.mean(np.array(lon).astype(float))
+    loc_ds[key] = [lat_centroid,lon_centroid]
+
+fileList = []
+fileList.append(fileList_or[0])
+fileList_or.pop(0)
+while fileList_or != []:
+    key_ref = fileList[-1][fileList[-1].find('_')+1:fileList[-1].find('.h5')]
+    loc_ref = loc_ds[key_ref]
+    dist = []
+    for file in fileList_or:
+        key = file[file.find('_')+1:file.find('.h5')]
+        loc = loc_ds[key]
+        dist.append(np.sqrt((loc[0]-loc_ref[0])**2+(loc[1]-loc_ref[1])**2))
+    index = np.argmin(dist)
+    fileList.append(fileList_or[index])
+    fileList_or.pop(index)
 
 #%%
 # Run Dispernet
@@ -172,8 +202,9 @@ print('fmax = '+str(fmax))
 v_min = 0.01
 flag_partrition = 1
 flag_plot_or = 0
+num_near = 4
 #dispernet.App(r_flag = r_max,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.8, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
-dispernet.App(info_basic,lon_all,lat_all,fileList,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.03, autoT=True, url='http://10.20.64.63:8514')
+dispernet.App(info_basic,lon_all,lat_all,fileList,num_near = num_near,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.03, autoT=True, url='http://10.20.64.63:8514')
 
 # transfer training
 #dispernet.createTrainSet('./trainSetDAS.h5', inputfile, outputfile)
