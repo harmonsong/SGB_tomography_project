@@ -55,7 +55,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][300:500]
+key_ds = info_basic['key_subworks'][0:200]
 #key_ds = ['107--18-06']
 #key_ds  = info_basic['key_subworks_repick']
     
@@ -185,15 +185,44 @@ for key in key_ds:
 fileList = []
 fileList.append(fileList_or[0])
 fileList_or.pop(0)
+fileList_all = os.listdir(inputfile)
+
+num_refs = 4
+
+    
+
 while fileList_or != []:
     key_ref = fileList[-1][fileList[-1].find('_')+1:fileList[-1].find('.h5')]
     loc_ref = loc_ds[key_ref]
+
+    
     dist = []
-    for file in fileList_or:
+    for file in fileList_all:
         key = file[file.find('_')+1:file.find('.h5')]
         loc = loc_ds[key]
         dist.append(np.sqrt((loc[0]-loc_ref[0])**2+(loc[1]-loc_ref[1])**2))
-    index = np.argmin(dist)
+    
+    #找到dist中最小的num_refs个值
+    key_refs = []
+    loc_refs = []
+    dist_near = []
+
+    indexs = np.argsort(dist)
+    for i in range(num_refs):
+        key_refs.append(fileList_all[indexs[i]])
+        loc_refs.append(loc_ds[fileList_all[indexs[i]][fileList_all[indexs[i]].find('_')+1:fileList_all[indexs[i]].find('.h5')]])
+    #print(key_refs)
+    
+    for file in fileList_or:
+        key = file[file.find('_')+1:file.find('.h5')]
+        loc = loc_ds[key]
+        dist_this = 0
+        for i in range(num_refs):
+            dist_this += np.sqrt((loc[0]-loc_refs[i][0])**2+(loc[1]-loc_refs[i][1])**2)
+        dist_near.append(dist_this)
+
+
+    index = np.argmin(dist_near)
     fileList.append(fileList_or[index])
     fileList_or.pop(index)
 
