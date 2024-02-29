@@ -55,7 +55,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][0:10]
+key_ds = info_basic['key_subworks'][300:500]
 #key_ds = ['107--18-06']
 #key_ds  = info_basic['key_subworks_repick']
     
@@ -84,10 +84,12 @@ with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
 #%%
-#r_max = info_basic_bi['r_max']
+r_max = info_basic_bi['r_max']
+"""
 r_max = {}
 for key in key_ds:
     r_max[key] = 10
+"""
 
 #%%
 
