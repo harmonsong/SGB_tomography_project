@@ -194,7 +194,7 @@ fileList.append(fileList_or[0])
 fileList_or.pop(0)
 fileList_all = os.listdir(inputfile)
 
-num_refs = 4
+num_refs = 6
 
     
 while fileList_or != []:
