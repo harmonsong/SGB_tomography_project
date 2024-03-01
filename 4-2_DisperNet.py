@@ -56,8 +56,15 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
 key_ds = info_basic['key_subworks'][0:200]
-#key_ds = ['107--18-06']
 #key_ds  = info_basic['key_subworks_repick']
+
+key_ds = []
+filename = dir_project+info_basic['dir_inv_dispernet']+'inv.txt'
+nums = np.loadtxt(filename,dtype='int')  
+nums = [str(x) for x in nums]
+for key_subwork in info_basic['key_subworks']:
+    if key_subwork.split('--')[0] in nums:
+        key_ds.append(key_subwork)
     
 """
 
@@ -190,7 +197,6 @@ fileList_all = os.listdir(inputfile)
 num_refs = 4
 
     
-
 while fileList_or != []:
     key_ref = fileList[-1][fileList[-1].find('_')+1:fileList[-1].find('.h5')]
     loc_ref = loc_ds[key_ref]
