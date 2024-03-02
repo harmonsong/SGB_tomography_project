@@ -59,7 +59,7 @@ key_ds = info_basic['key_subworks'][0:200]
 #key_ds  = info_basic['key_subworks_repick']
 
 key_ds = []
-filename = dir_project+info_basic['dir_inv_dispernet']+'inv.txt'
+filename = dir_project+info_basic['dir_inv_dispernet']+'inv1.txt'
 nums = np.loadtxt(filename,dtype='int')  
 nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
