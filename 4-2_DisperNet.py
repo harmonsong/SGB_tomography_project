@@ -12,20 +12,20 @@ import pandas as pd
 
 
 #%%
-flag_project = 1 # 0--regular ; 1--repartition
+flag_project = 2 # 0--regular ; 1--repartition; 2--voronoi
 #%%
 if flag_project == 0:
     file_project = 'a-project.yml'
-    with open('a-project.yml', 'r', encoding='utf-8') as f:
-        proj = yaml.load(f.read(), Loader=yaml.FullLoader)
-    name_project = proj['name']
     #name_project = 'project/output_FJSJ_16-01/'               # Harmon server
 elif flag_project == 1:
     file_project = 'a-project_repar.yml'
-    with open('a-project_repar.yml', 'r', encoding='utf-8') as f:
-        proj = yaml.load(f.read(), Loader=yaml.FullLoader)
-    name_project = proj['name']
     #name_project = 'project_repartrition/output_repar_01-03/'               # Harmon server
+elif flag_project == 2:
+    file_project = 'a-project_voro.yml'
+    #name_project = 'project_voronoi/output_voronoi_01-03/'               # Harmon server
+with open(file_project, 'r', encoding='utf-8') as f:
+    proj = yaml.load(f.read(), Loader=yaml.FullLoader)
+name_project = proj['name']
 
 #%%
 with open('0_config.yml', 'r', encoding='utf-8') as f:
@@ -55,9 +55,10 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['dir_ds']
-key_ds = info_basic['key_subworks'][0:200]
+key_ds = info_basic['key_subworks']
 #key_ds  = info_basic['key_subworks_repick']
 
+"""
 key_ds = []
 filename = dir_project+info_basic['dir_inv_dispernet']+'inv1.txt'
 nums = np.loadtxt(filename,dtype='int')  
@@ -65,7 +66,8 @@ nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
     if key_subwork.split('--')[0] in nums:
         key_ds.append(key_subwork)
-    
+"""
+
 """
 
 key_ds = []
