@@ -192,7 +192,7 @@ def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
 
 # %%
 tag = 5
-flag_plot = 1
+flag_plot = 0
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:
     plot_initial(Vp,Vs,rho,depths,tag)
