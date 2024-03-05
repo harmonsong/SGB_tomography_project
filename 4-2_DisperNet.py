@@ -16,13 +16,11 @@ flag_project = 2 # 0--regular ; 1--repartition; 2--voronoi
 #%%
 if flag_project == 0:
     file_project = 'a-project.yml'
-    #name_project = 'project/output_FJSJ_16-01/'               # Harmon server
 elif flag_project == 1:
     file_project = 'a-project_repar.yml'
-    #name_project = 'project_repartrition/output_repar_01-03/'               # Harmon server
 elif flag_project == 2:
     file_project = 'a-project_voro.yml'
-    #name_project = 'project_voronoi/output_voronoi_01-03/'               # Harmon server
+    
 with open(file_project, 'r', encoding='utf-8') as f:
     proj = yaml.load(f.read(), Loader=yaml.FullLoader)
 name_project = proj['name']

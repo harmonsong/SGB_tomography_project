@@ -22,15 +22,19 @@ import yaml
 flag_project = 1 # 0--regular; 1--repartition
 # %%
 if flag_project == 0:
-    with open('a-project.yml', 'r', encoding='utf-8') as f:
-        proj = yaml.load(f.read(), Loader=yaml.FullLoader)
-    name_project = proj['name']
-    #name_project = 'project/output_FJSJ_16-01/'               # Harmon server
+    file_project = 'a-project.yml'
 elif flag_project == 1:
-    with open('a-project_repar.yml', 'r', encoding='utf-8') as f:
-        proj = yaml.load(f.read(), Loader=yaml.FullLoader)
-    name_project = proj['name']
-    #name_project = 'project_repartrition/repartrition_01-03/'               # Harmon server
+    file_project = 'a-project_repar.yml'
+elif flag_project == 2:
+    file_project = 'a-project_voro.yml'
+    
+with open(file_project, 'r', encoding='utf-8') as f:
+    proj = yaml.load(f.read(), Loader=yaml.FullLoader)
+name_project = proj['name']
+
+#name_project = 'project/output_FJSJ_16-01/'               
+#name_project = 'project_repartrition/repartrition_01-03/'               
+#name_project = 'project_voronoi/voronoi_01-03/'         
 
 #%%
 with open('0_config.yml', 'r', encoding='utf-8') as f:
@@ -143,8 +147,8 @@ def user_defined(z, vs):
 #dz = 0.006
 #N = 200
 #dz = 0.0015  
-N = 60
-dz = 0.005
+N = 100
+dz = 0.003
 #dz = 0.002
 flag_relation = 3
 
@@ -187,7 +191,7 @@ def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
             f.write('{} {:.4f} {:.4f} {:.4f} {:.4f}\n'.format(int(layers[i]),depths[i],Vp[i],Vs[i],rho[i]))
 
 # %%
-tag = 4
+tag = 5
 flag_plot = 1
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:
