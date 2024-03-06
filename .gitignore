@@ -29,8 +29,7 @@ lsf_out
 pbs_out
 *ipynb_checkpoints*
 # filename
-a-project.yml
-a-project_repar.yml
+a-project*
 0_config.yml
 
 .vscode
