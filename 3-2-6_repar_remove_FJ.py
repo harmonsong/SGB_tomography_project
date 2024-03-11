@@ -51,7 +51,7 @@ filename_bi = dir_project+'Basic_info.npy'
 info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting dictionary
 
 #%%
-key_subworks = info_basic['key_subworks'][1:3]
+key_subworks = info_basic['key_subworks']
 if 'key_subworks_repick' in info_basic.keys():
     key_subworks_repick = info_basic['key_subworks_repick']
 else:
@@ -83,7 +83,7 @@ count_all = ncffile['count'][:]
 ncffile.close()
 
 #%%
-def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r):
+def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r,index):
     global dir_project
     global dir_ds
     global c
@@ -106,6 +106,8 @@ def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r):
     h5file.create_dataset('ds_linear',data=ds_linear)
     h5file.create_dataset('f',data=f0)
     h5file.create_dataset('c',data=c)
+    h5file.create_dataset('index_ncfs',data = index)
+    h5file.create_dataset('r',data=r)
     h5file.close()
     print('Finish FJ calculation, time:', time.time()-start0, ' seconds')
 
@@ -150,6 +152,7 @@ def linear_stack(key_subwork):
     f0 = info_basic_bi['f']
     count= np.zeros(nPairs)
     StationPairs = GetStationPairs(nsta)
+    index = []
     for i in range(nPairs):
         sta1 = StationPairs[2*i]
         sta2 = StationPairs[2*i+1]
@@ -160,7 +163,7 @@ def linear_stack(key_subwork):
         for j in range(nsta_all-idx1,nsta_all):
             m += j
         num = m +idx2 - idx1 -1
-        
+        index.append(num)
         ncfs_sum_linear[i,:] = np.nan_to_num(ncfs[num,:])
         count[i] = count_all[num]
         r[i] = great_circle((lat_stations[sta1],lon_stations[sta1]),(lat_stations[sta2],lon_stations[sta2])).km
@@ -181,7 +184,7 @@ def linear_stack(key_subwork):
         ncffile.create_dataset('StationPairs',data=StationPairs)
         ncffile.close()
     print('Finish linear stack, time:', time.time()-start0, ' seconds')
-    return ncfs_sum_linear, r, StationPairs
+    return ncfs_sum_linear, r, StationPairs, index
 
 #%% remove stack
 def remove_stack(key_subwork,ncfs_sum_linear,r,StationPairs):
@@ -241,14 +244,14 @@ start00 = time.time()
 for key_subwork in key_subworks:
     print("Collecting ",key_subwork,' ...')
     # linear stack
-    ncfs_sum_linear, r, StationPairs = linear_stack(key_subwork)
+    ncfs_sum_linear, r, StationPairs,index = linear_stack(key_subwork)
     info_basic_bi['r_max'][key_subwork] = np.max(r)
     ncfs_sum_remove = remove_stack(key_subwork,ncfs_sum_linear,r,StationPairs)
     # FJ
     if os.path.exists(dir_ds+'ds_'+key_subwork+'.h5'):
         print(key_subwork+' exists')
         continue
-    noise_fj(key_subwork,ncfs_sum_linear,ncfs_sum_remove,r)
+    noise_fj(key_subwork,ncfs_sum_linear,ncfs_sum_remove,r,index)
     print('Finish *** '+ key_subwork +   '***; time since start:', time.time()-start00, ' seconds. Proceeded '+str(key_subworks.index(key_subwork)+1)+'/'+str(len(key_subworks))+' subworks.')
     
 

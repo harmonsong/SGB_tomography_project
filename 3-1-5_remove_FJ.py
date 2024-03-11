@@ -78,7 +78,7 @@ count_all = ncffile['count'][:]
 ncffile.close()
 
 # %%
-def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r):
+def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r,index):
     global dir_project
     global dir_ds
     global c
@@ -101,6 +101,8 @@ def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r):
     h5file.create_dataset('ds_linear',data=ds_linear)
     h5file.create_dataset('f',data=f0)
     h5file.create_dataset('c',data=c)
+    h5file.create_dataset('index_ncfs',data = index)
+    h5file.create_dataset('r',data=r)
     h5file.close()
     print('Finish FJ calculation, time:', time.time()-start0, ' seconds')
 
@@ -145,6 +147,7 @@ def linear_stack(key_subwork):
     f0 = info_basic_bi['f']
     count= np.zeros(nPairs)
     StationPairs = GetStationPairs(nsta)
+    index = []
     for i in range(nPairs):
         sta1 = StationPairs[2*i]
         sta2 = StationPairs[2*i+1]
@@ -155,7 +158,7 @@ def linear_stack(key_subwork):
         for j in range(nsta_all-idx1,nsta_all):
             m += j
         num = m +idx2 - idx1 -1
-        
+        index.append(num)
         ncfs_sum_linear[i,:] = np.nan_to_num(ncfs[num,:])
         count[i] = count_all[num]
         #r[i] = r0[num]
@@ -181,7 +184,7 @@ def linear_stack(key_subwork):
         ncffile.create_dataset('StationPairs',data=StationPairs)
         ncffile.close()
     print('Finish linear stack, time:', time.time()-start0, ' seconds')
-    return ncfs_sum_linear, r, StationPairs
+    return ncfs_sum_linear, r, StationPairs, index
 
 #%% remove stack
 def remove_stack(key_subwork,ncfs_sum_linear,r,StationPairs):
