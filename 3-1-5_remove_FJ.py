@@ -225,8 +225,6 @@ c = np.linspace(c_min,c_max,c_num)
 info_basic['c_min'] = c_min
 info_basic['c_max'] = c_max
 info_basic['c_num'] = c_num
-with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
-   yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
 #%% parameter for stacking
 v_tag = 2
@@ -252,6 +250,6 @@ for key_subwork in key_subworks:
         print(key_subwork+' exists')
         continue
     noise_fj(key_subwork,ncfs_sum_linear,ncfs_sum_remove,r)
-    print('Finish *** '+ key_subwork +   '***; time since start:', time.time()-start00, ' seconds. Proceeded '+str(key_subworks.index(key_subwork)+1)+'/'+str(len(key_subworks))+' subworks.')
+    print('Finish *** '+ key_subwork +   ' ***; time since start:', time.time()-start00, ' seconds. Proceeded '+str(key_subworks.index(key_subwork)+1)+'/'+str(len(key_subworks))+' subworks.')
 # %%
 np.save(filename_bi,info_basic_bi)
