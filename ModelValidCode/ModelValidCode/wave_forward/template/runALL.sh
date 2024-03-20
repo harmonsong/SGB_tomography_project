@@ -25,5 +25,4 @@ mpirun -np $LSB_DJOB_NUMPROC /work/ess-wangp/FD3DtopoEw/src/bin/seis3d_metric_mp
 mpirun -np $LSB_DJOB_NUMPROC /work/ess-wangp/FD3DtopoEw/src/bin/seis3d_media_mpi SeisFD3D.conf
 #/work/ess-wangp/FD3DtopoEw/src/bin/seis3d_source SeisFD3D.conf
 #/work/ess-wangp/FD3DtopoEw/src/bin/seis3d_station SeisFD3D.conf
-
-mpirun -np $LSB_DJOB_NUMPROC /work/ess-wangp/FD3DtopoEw/src/bin/seis3d_wave_mpi SeisFD3D.conf
+#mpirun -np $LSB_DJOB_NUMPROC /work/ess-wangp/FD3DtopoEw/src/bin/seis3d_wave_mpi SeisFD3D.conf
