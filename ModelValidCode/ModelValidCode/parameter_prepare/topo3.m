@@ -1,17 +1,24 @@
 clear; clc;
 
 %%
+% nx=1500; %EW
+% ny=1800; %NS       
+% dx=1e3; %
+% dy=1e3;
 
-nx=1500; %EW
-ny=1800; %NS
-dx=1e3; %
-dy=1e3;
+file = load("Vs_inter.mat");
+mx = file.x';
+my = file.y';
+mz = file.z';
 
-
+nx = 2000;
+ny = 2000;
+dx = 0.21;
+dy = 0.21;
 Xlen = nx*dx;%1500KM
 Ylen = ny*dy;%1600KM
-Zdep = 75e3;%here doesnot need to exceed bounds
-
+Zdep = 200;%here doesnot need to exceed bounds
+%%
 gridX = zeros(nx,ny);
 gridY = zeros(nx,ny);
 mx = linspace(0,Xlen,nx); 

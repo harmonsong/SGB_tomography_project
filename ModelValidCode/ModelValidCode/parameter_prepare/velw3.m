@@ -1,17 +1,26 @@
 clear; clc;
 
 storepath='./pictures/';
-%vel: size(lat*lon*dep)
-load('newdep.mat');
-load('Vs_full.mat');
-mx = linspace(0,1500e3,601);%lon
-my = linspace(0,1800e3,641);%lat
-mz = -1*newdep*1e3; %dep
+
+% %vel: size(lat*lon*dep)
+% load('newdep.mat');
+% load('Vs_full.mat');
+% mx = linspace(0,1500e3,601);%lon
+% my = linspace(0,1800e3,641);%lat
+% mz = -1*newdep*1e3; %dep
+
+file = load("Vs_inter.mat");
+Vs_full = file.vs_inter;
+mx = file.x;
+my = file.y;
+mz = file.z;
+
+
 %% get Vall(vs), unit km/s
     %vall nx ny nz,  lon,lat,dep
     %Vs_full lat*lon*dep
 Vall = permute(Vs_full, [2,1,3]);
-nz=176;ny=641;nx=601;
+nz=length(mz);ny=length(my);nx=length(mx);
 %% construct velocity array
 
 if Vall(end,1,1) > 100

@@ -6,6 +6,7 @@ Structure
 *.kmz
 *.pyc
 *.llz
+*.dat
 tempCodeRunnerFile*
 */__pycache__*
 

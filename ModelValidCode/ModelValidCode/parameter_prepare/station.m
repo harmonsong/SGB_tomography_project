@@ -1,10 +1,19 @@
 clear; clc;
-load('Staloc.dat')
-Stalon = Staloc(:,1);
-Stalat = Staloc(:,2);
+% load('Staloc.dat')
+% Stalon = Staloc(:,1);
+% Stalat = Staloc(:,2);
+Staloc = load("sta_in.mat");
+Stalon = Staloc.lon_sta';
+Stalat = Staloc.lat_sta';
 %%
-Clat1 = 20; Clat2 = 36;
-Xlon = 108; Ylat = 20;
+file = load("Vs_inter.mat");
+Vs_full = file.vs_inter;
+mx = file.x;
+my = file.y;
+mz = file.z;
+
+Clat1 = min(my); Clat2 = max(my);
+Xlon = min(mx); Ylat = max(mx);
 lonunit = 2*pi*6359.752/360*cos((Clat1+Clat2)/2/180*pi)*1e3; % unit length of longitude                                    
 latunit = 2*pi*6378.137/360*1e3; % unit length of latitude                        
 

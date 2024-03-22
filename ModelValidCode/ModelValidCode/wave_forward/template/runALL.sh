@@ -2,7 +2,7 @@
 #BSUB -L /bin/bash
 #BSUB -J RAwave
 #BSUB -q medium
-#BSUB -n 240
+#BSUB -n 200
 #BSUB -R "span[ptile=40]"
 #BSUB -oo sc.out
 #BSUB -eo sc.err
