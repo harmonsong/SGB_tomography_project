@@ -7,6 +7,7 @@ Structure
 *.pyc
 *.llz
 *.dat
+*.nc
 tempCodeRunnerFile*
 */__pycache__*
 
