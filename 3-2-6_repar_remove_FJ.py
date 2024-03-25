@@ -1,5 +1,4 @@
 # %%
-# %%
 import matplotlib.pyplot as plt
 import numpy as np
 import ccfj
@@ -20,7 +19,6 @@ sys.path.append(r'../tools_F-J/')
 from toollib_standard import maplib
 from toollib_standard import mathlib
 from toollib_standard import filelib
-from toollib_standard import stacklib
 from toollib_standard import plotlib
 
 # %%
@@ -61,10 +59,14 @@ else:
 #key_subworks = ['1']
 
 # %%
-dir_ds = dir_project + info_basic['dir_ds']
-dir_CC = dir_CC_workspace+info_basic['name_CC']
-dir_partition = dir_project + info_basic['dir_partition']
+dir_CC = dir_CC_workspace+info_basic['rdir_CC']
+dir_partition = dir_project + info_basic['rdir_partition']
 stalistname_all = info_basic['stalistname_all']
+rdir_ds = 'ds_'+info_basic['tag'] + '/'
+info_basic['rdir_ds'] = rdir_ds
+dir_ds = dir_project + rdir_ds
+if os.path.exists(dir_ds) == False:
+    os.makedirs(dir_ds)
 
 #%% 
 stainfo = pd.read_excel(stalistname_all)
@@ -72,8 +74,6 @@ nsta_all = len(stainfo.iloc[:,0])
 StationPairs_all = GetStationPairs(nsta_all)
 nPairs_all = int(len(StationPairs_all)/2)
 stalist_all = stainfo['Station'].tolist()
-lat_all = stainfo['latitude'].tolist() 
-lon_all = stainfo['longitude'].tolist()
 
 #%% 
 ncffile = h5py.File(dir_CC + 'gather_all.h5','r')
@@ -111,17 +111,6 @@ def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r,index):
     h5file.close()
     print('Finish FJ calculation, time:', time.time()-start0, ' seconds')
 
-# %% 
-def Pairs(sta):
-    p = []
-    nsta = len(sta)
-    for ii in range(nsta):
-        for jj in range(ii+1,nsta):
-            p.append([sta[ii],sta[jj]])
-    return p
-def cal_indx(pair,nsta):
-    indx = int(pair[0]*(2*nsta-pair[0]-1)/2+pair[1]-pair[0]-1)
-    return indx
 #%%
 def time_window_filter(t,ncfst0,r,v_min,t0,a):
     ncfst = ncfst0.copy()
@@ -222,9 +211,9 @@ c_min = 0.200
 c_max = 2
 c_num = 800
 c = np.linspace(c_min,c_max,c_num)
-info_basic['c_min'] = c_min
-info_basic['c_max'] = c_max
-info_basic['c_num'] = c_num
+info_basic['fj_c_min'] = c_min
+info_basic['fj_c_max'] = c_max
+info_basic['fj_c_num'] = c_num
 with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
@@ -232,9 +221,9 @@ with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
 v_tag = 2
 a = 100
 t0 = 0.01
-info_basic['v_tag'] = v_tag
-info_basic['t0'] = t0
-info_basic['a'] = a
+info_basic['remove_v_tag'] = v_tag
+info_basic['remove_t0'] = t0
+info_basic['remove_a'] = a
 with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 

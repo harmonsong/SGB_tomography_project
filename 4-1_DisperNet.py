@@ -12,7 +12,14 @@ import pandas as pd
 
 
 #%%
-flag_project = 2 # 0--regular ; 1--repartition; 2--voronoi
+flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
+flag_repick = 1 # 0-- no new h5 trans; 1-- yes
+flag_forward = 0 # 0-- no forward; 1-- yes
+num_refs = 6 # sort with nearst num_refs centroid
+flag_partrition = 1 # plot partition
+flag_plot_or = 0    # plot non-remove FJ
+num_near = 4        # add nearest num_near dispersion picks
+
 #%%
 if flag_project == 0:
     file_project = 'a-project.yml'
@@ -52,19 +59,20 @@ lon_all = stainfo['longitude'].tolist()
 faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
-dir_ds = dir_project + info_basic['dir_ds']
+dir_ds = dir_project + info_basic['rdir_ds']
 key_ds = info_basic['key_subworks']
 #key_ds  = info_basic['key_subworks_repick']
 
-"""
+
 key_ds = []
-filename = dir_project+info_basic['dir_inv_dispernet']+'inv1.txt'
-nums = np.loadtxt(filename,dtype='int')  
+#filename = dir_project+info_basic['dir_disp_pick_dispernet']+'inv1.txt'
+#nums = np.loadtxt(filename,dtype='int')  
+nums = [1]
 nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
     if key_subwork.split('--')[0] in nums:
         key_ds.append(key_subwork)
-"""
+
 
 """
 
@@ -83,10 +91,10 @@ for key in info_basic['key_subworks']:
 """
 
 #%% 
-info_basic['dir_inv_dispernet'] = 'inv_dispernet/'
-dir_inv = dir_project + info_basic['dir_inv_dispernet']
-if not os.path.exists(dir_inv):
-    os.makedirs(dir_inv)
+info_basic['rdir_disp_pick'] = 'disp_pick/'
+dir_disp_pick = dir_project + info_basic['rdir_disp_pick']
+if not os.path.exists(dir_disp_pick):
+    os.makedirs(dir_disp_pick)
 with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
@@ -99,18 +107,15 @@ for key in key_ds:
 """
 
 #%%
-
 fmax = 30
 fmin = 1
 cmax = 2
 cmin = 0.25
-flag_repick = 1
-inputfile = dir_inv + 'h5/'
-outputfile = dir_inv + 'data/'
+inputfile = dir_disp_pick + 'h5/'
+outputfile = dir_disp_pick
 f = info_basic_bi['f']
-c = np.linspace(info_basic['c_min'],info_basic['c_max'],info_basic['c_num'])
+c = np.linspace(info_basic['fj_c_min'],info_basic['fj_c_max'],info_basic['fj_c_num'])
 if flag_repick == 1:
-    
     if os.path.exists(inputfile):
         os.system('rm -rf '+inputfile)
     os.makedirs(inputfile)
@@ -148,25 +153,18 @@ if os.path.exists(old_curve_path):
             key_olds.append(file[file.find('_')+1:file.find('curve')])
 
 #%%
-fund_curve_path = dir_project + info_basic['dir_inv_dispernet']+'disp_model_fund/'
 key_fund = []
-if os.path.exists(fund_curve_path):
-    print('exits fund curve')
-    # read all files in the folder
-    files = os.listdir(fund_curve_path)
-    for file in files:
-        
-        key_fund.append(file[file.find('_')+1:file.find('curve')])
-
-#%%
-over_curve_path = dir_project + info_basic['dir_inv_dispernet']+'disp_model/'
-#将config_inv.yml从San_Jansinto复制到inv_dispernet
-outname_config = dir_inv+'config_inv.yml'
-outname_config_fund = dir_inv+'config_inv_fund.yml'
-if os.path.exists(outname_config)==False:
-    shutil.copyfile('config_inv.yml', dir_inv+'config_inv.yml')
-if os.path.exists(outname_config_fund)==False:
-    shutil.copyfile('config_inv_fund.yml', dir_inv+'config_inv_fund.yml')
+fund_curve_path = dir_project + 'inversion_BGFS/disp_model_fund/nono/'
+over_curve_path = dir_project + 'inversion_BGFS/disp_model/nono/'
+if flag_forward == 1:
+    fund_curve_path = dir_project + info_basic['rdir_inv_BFGS']+'disp_model_fund/'
+    if os.path.exists(fund_curve_path):
+        print('exits fund curve')
+        # read all files in the folder
+        files = os.listdir(fund_curve_path)
+        for file in files:
+            key_fund.append(file[file.find('_')+1:file.find('curve')])
+    over_curve_path = dir_project + info_basic['rdir_inv_BFGS']+'disp_model/'
 
 #%%    
 """
@@ -181,7 +179,7 @@ key_ds = [file[file.find('_')+1:file.find('.h5')] for file in fileList_or]
 loc_ds = {}
 for key in key_ds:
     loc_ds[key] = [0,0]
-    filePath = dir_project + info_basic['dir_partition'] + str(key) +'.txt'
+    filePath = dir_project + info_basic['rdir_partition'] + str(key) +'.txt'
     station,lat,lon = np.loadtxt(filePath,dtype = 'str',unpack=True)
     lat = lat.tolist()
     lon = lon.tolist()
@@ -194,9 +192,6 @@ fileList.append(fileList_or[0])
 fileList_or.pop(0)
 fileList_all = os.listdir(inputfile)
 
-num_refs = 6
-
-    
 while fileList_or != []:
     key_ref = fileList[-1][fileList[-1].find('_')+1:fileList[-1].find('.h5')]
     loc_ref = loc_ds[key_ref]
@@ -237,9 +232,6 @@ while fileList_or != []:
 #dispernet.App(filePath=inputfile, curveFilePath=outputfile,freqSeries=f, trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.12, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
 print('fmax = '+str(fmax))
 v_min = 0.01
-flag_partrition = 1
-flag_plot_or = 0
-num_near = 4
 #dispernet.App(r_flag = r_max,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.8, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
 dispernet.App(info_basic,lon_all,lat_all,fileList,num_near = num_near,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.03, autoT=True, url='http://10.20.64.63:8514')
 

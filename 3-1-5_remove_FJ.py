@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import ccfj
 from ccfj import CC
-from ccfj import GetStationPairs
 from geopy.distance import great_circle
 import folium
 import h5py
@@ -20,7 +19,6 @@ from toollib_standard import maplib
 from toollib_standard import mathlib
 from toollib_standard import filelib
 from toollib_standard import stacklib
-from toollib_standard import plotlib
 
 # %%
 flag_save = 0; # 1: save stack, 0: not save stack
@@ -56,19 +54,23 @@ key_subworks
 
 #%% 
 #dir_stack = dir_project+info_basic['dir_stack']
-dir_ds = dir_project + info_basic['dir_ds']
-dir_CC = dir_CC_workspace+info_basic['name_CC']
-dir_partition = dir_project + info_basic['dir_partition']
+dir_CC = dir_CC_workspace+info_basic['rdir_CC']
+dir_partition = dir_project + info_basic['rdir_partition']
 stalistname_all = info_basic['stalistname_all']
+rdir_ds = 'ds_'+info_basic['tag']+'/'
+dir_ds = dir_project + rdir_ds
+info_basic['rdir_ds'] = rdir_ds
+if os.path.exists(dir_ds) == False:
+    os.makedirs(dir_ds)
 
 #%% 
 stainfo = pd.read_excel(stalistname_all)
 nsta_all = len(stainfo.iloc[:,0])
-StationPairs_all = GetStationPairs(nsta_all)
+StationPairs_all = mathlib.GetStationPairs(nsta_all)
 nPairs_all = int(len(StationPairs_all)/2)
 stalist_all = stainfo['Station'].tolist()
-lat_all = stainfo['latitude'].tolist() 
-lon_all = stainfo['longitude'].tolist()
+lat_stations_all = stainfo['latitude'].tolist() 
+lon_stations_all = stainfo['longitude'].tolist()
 
 #%%
 ncffile = h5py.File(dir_CC + 'gather_all.h5','r')
@@ -106,17 +108,6 @@ def noise_fj(key_subwork,ncfs_linear,ncfs_remove,r,index):
     h5file.close()
     print('Finish FJ calculation, time:', time.time()-start0, ' seconds')
 
-# %% 
-def Pairs(sta):
-    p = []
-    nsta = len(sta)
-    for ii in range(nsta):
-        for jj in range(ii+1,nsta):
-            p.append([sta[ii],sta[jj]])
-    return p
-def cal_indx(pair,nsta):
-    indx = int(pair[0]*(2*nsta-pair[0]-1)/2+pair[1]-pair[0]-1)
-    return indx
 #%%
 def time_window_filter(t,ncfst0,r,v_min,t0,a):
     ncfst = ncfst0.copy()
@@ -139,14 +130,14 @@ def linear_stack(key_subwork):
     path_partition= dir_partition + str(key_subwork) + '.txt'
     stalist, lat_stations, lon_stations = np.loadtxt(path_partition, dtype='str', unpack=True)
     nsta = len(stalist)
-    StationPairs = GetStationPairs(nsta)
+    StationPairs = mathlib.GetStationPairs(nsta)
     nPairs = int(len(StationPairs)/2)
     nf = info_basic['nf']
     ncfs_sum_linear = np.zeros((nPairs,nf),dtype=np.complex64)
     r = np.zeros(nPairs)
     f0 = info_basic_bi['f']
     count= np.zeros(nPairs)
-    StationPairs = GetStationPairs(nsta)
+    StationPairs = mathlib.GetStationPairs(nsta)
     index = []
     for i in range(nPairs):
         sta1 = StationPairs[2*i]
@@ -222,17 +213,17 @@ c_min = 0.200
 c_max = 2
 c_num = 800
 c = np.linspace(c_min,c_max,c_num)
-info_basic['c_min'] = c_min
-info_basic['c_max'] = c_max
-info_basic['c_num'] = c_num
+info_basic['fj_c_min'] = c_min
+info_basic['fj_c_max'] = c_max
+info_basic['fj_c_num'] = c_num
 
 #%% parameter for stacking
 v_tag = 2
 a = 100
 t0 = 0.01
-info_basic['v_tag'] = v_tag
-info_basic['t0'] = t0
-info_basic['a'] = a
+info_basic['remove_v_tag'] = v_tag
+info_basic['remove_t0'] = t0
+info_basic['remove_a'] = a
 with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
@@ -242,14 +233,14 @@ start00 = time.time()
 for key_subwork in key_subworks:
     print("Collecting ",key_subwork,' ...')
     # linear stack
-    ncfs_sum_linear, r, StationPairs = linear_stack(key_subwork)
+    ncfs_sum_linear, r, StationPairs, index = linear_stack(key_subwork)
     info_basic_bi['r_max'][key_subwork] = np.max(r)
     ncfs_sum_remove = remove_stack(key_subwork,ncfs_sum_linear,r,StationPairs)
     # FJ
     if os.path.exists(dir_ds+'ds_'+key_subwork+'.h5'):
         print(key_subwork+' exists')
         continue
-    noise_fj(key_subwork,ncfs_sum_linear,ncfs_sum_remove,r)
+    noise_fj(key_subwork,ncfs_sum_linear,ncfs_sum_remove,r,index)
     print('Finish *** '+ key_subwork +   ' ***; time since start:', time.time()-start00, ' seconds. Proceeded '+str(key_subworks.index(key_subwork)+1)+'/'+str(len(key_subworks))+' subworks.')
 # %%
 np.save(filename_bi,info_basic_bi)

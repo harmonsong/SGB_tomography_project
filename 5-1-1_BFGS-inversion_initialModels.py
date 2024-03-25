@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import yaml
+import shutil
 
 # cd /shdisk/rem2/Harmon/F-J/San/project_repartition_v4.0/output_repar_v9.2_01-01/inv_dispernet/
 # mpirun -np 60 /home/songsh/git_repo/F-J/tools_F-J/toollib_DisbaCode/inversion.py --num_init 10  --config config_inv.yml --key select_50_60
@@ -57,12 +58,10 @@ info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting 
 fmin = 1
 fmax = 30
 nf = 291
-info_basic['for_fmin'] = fmin
-info_basic['for_fmax'] = fmax
-info_basic['for_nf'] = nf
+info_basic['BFGS_for_fmin'] = fmin
+info_basic['BFGS_for_fmax'] = fmax
+info_basic['BFGS_for_nf'] = nf
 
-with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
-   yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
 # %%
 old_curve_path = 'Structure/disp_data_5-15/'
@@ -74,20 +73,28 @@ if os.path.exists(old_curve_path):
         key_olds.append(file[3:8])
 
 # %%
-dir_file = dir_project + info_basic['dir_inv_dispernet'] + 'initial/'
+rdir_inv = 'inversion_BFGS/'
+dir_inv = dir_project + rdir_inv
+info_basic['rdir_inv_BFGS'] = rdir_inv
+dir_file = dir_inv + 'initial/'
 dir_image = dir_project + info_basic['dir_image'] + 'initial_model/'
 if os.path.exists(dir_image) == False:
     os.makedirs(dir_image)
-key_subworks = info_basic['key_subworks']
-#key_subworks = [str(i) for i in range(0,19)]
-key_subworks
-
-# %%
+if os.path.exists(dir_inv) == False:
+    os.makedirs(dir_inv)
 if os.path.exists(dir_file) == False:
     os.makedirs(dir_file)
 
-# %%
+#%%
+#将config_inv.yml从San_Jansinto复制到
+outname_config = dir_inv+'config_inv.yml'
+outname_config_fund = dir_inv+'config_inv_fund.yml'
+if os.path.exists(outname_config)==False:
+    shutil.copyfile('config_inv.yml', dir_inv+'config_inv.yml')
+if os.path.exists(outname_config_fund)==False:
+    shutil.copyfile('config_inv_fund.yml', dir_inv+'config_inv_fund.yml')
 
+# %%
 V0 = 0.3
 alpha = 0.25
 #beta = 3
@@ -149,8 +156,10 @@ def user_defined(z, vs):
 #dz = 0.0015  
 N = 100
 dz = 0.003
-#dz = 0.002
-flag_relation = 3
+flag_relation = 1
+info_basic['inv_BFGS_layers'] = N
+info_basic['inv_BFGS_dz'] = dz
+info_basic['inv_BFGS_empirical'] = flag_relation
 
 # %%
 layers = np.linspace(1,N,N)
@@ -196,3 +205,6 @@ flag_plot = 0
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:
     plot_initial(Vp,Vs,rho,depths,tag)
+
+with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
+   yaml.dump(data=info_basic, stream=f, allow_unicode=True)
