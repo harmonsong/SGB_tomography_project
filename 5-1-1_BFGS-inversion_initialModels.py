@@ -62,22 +62,12 @@ info_basic['BFGS_for_fmin'] = fmin
 info_basic['BFGS_for_fmax'] = fmax
 info_basic['BFGS_for_nf'] = nf
 
-
-# %%
-old_curve_path = 'Structure/disp_data_5-15/'
-key_olds = []
-if os.path.exists(old_curve_path):
-    # read all files in the folder
-    files = os.listdir(old_curve_path)
-    for file in files:
-        key_olds.append(file[3:8])
-
 # %%
 rdir_inv = 'inversion_BFGS/'
 dir_inv = dir_project + rdir_inv
 info_basic['rdir_inv_BFGS'] = rdir_inv
 dir_file = dir_inv + 'initial/'
-dir_image = dir_project + info_basic['dir_image'] + 'initial_model/'
+dir_image = dir_project + info_basic['rdir_image'] + 'initial_model/'
 if os.path.exists(dir_image) == False:
     os.makedirs(dir_image)
 if os.path.exists(dir_inv) == False:
@@ -200,7 +190,7 @@ def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
             f.write('{} {:.4f} {:.4f} {:.4f} {:.4f}\n'.format(int(layers[i]),depths[i],Vp[i],Vs[i],rho[i]))
 
 # %%
-tag = 5
+tag = 1
 flag_plot = 0
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:
