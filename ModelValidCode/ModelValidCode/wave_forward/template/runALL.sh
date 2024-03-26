@@ -1,8 +1,8 @@
 #!/bin/bash
 #BSUB -L /bin/bash
 #BSUB -J RAwave
-#BSUB -q medium
-#BSUB -n 200
+#BSUB -q smp
+#BSUB -n 32
 #BSUB -R "span[ptile=40]"
 #BSUB -oo sc.out
 #BSUB -eo sc.err
@@ -25,4 +25,5 @@ mpirun -np $LSB_DJOB_NUMPROC /work/ess-wangp/FD3DtopoEw/src/bin/seis3d_metric_mp
 mpirun -np $LSB_DJOB_NUMPROC /work/ess-wangp/FD3DtopoEw/src/bin/seis3d_media_mpi SeisFD3D.conf
 #/work/ess-wangp/FD3DtopoEw/src/bin/seis3d_source SeisFD3D.conf
 #/work/ess-wangp/FD3DtopoEw/src/bin/seis3d_station SeisFD3D.conf
+
 #mpirun -np $LSB_DJOB_NUMPROC /work/ess-wangp/FD3DtopoEw/src/bin/seis3d_wave_mpi SeisFD3D.conf

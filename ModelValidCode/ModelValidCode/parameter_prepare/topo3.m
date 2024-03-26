@@ -6,6 +6,8 @@ clear; clc;
 % dx=1e3; %
 % dy=1e3;
 
+dir_file = '../wave_forward/template/parfile/';
+
 file = load("Vs_inter.mat");
 mx = file.x';
 my = file.y';
@@ -13,8 +15,8 @@ mz = file.z';
 
 nx = 1000;
 ny = 1000;
-dx = 0.45;
-dy = 0.45;
+dx = 0.5;
+dy = 0.5;
 Xlen = nx*dx;%1500KM
 Ylen = ny*dy;%1600KM
 Zdep = 200;%here doesnot need to exceed bounds
@@ -40,7 +42,8 @@ disp('start write');
 
 
 %write for fortran
-fp1 = fopen('./gridvmap_F.dat','w');
+filename = [dir_file,'/gridvmap_F.dat'];
+fp1 = fopen(filename,'w');
 
 fprintf(fp1,'%d %d %d\n',nx,ny,ninterface);
 
@@ -58,14 +61,16 @@ fclose(fp1);
 
 
 %write for fortran X&Y
-fp2 = fopen('./grid_FX.dat','w');
+filename = [dir_file,'/grid_FX.dat'];
+fp2 = fopen(filename,'w');
 fprintf(fp2,'%d\n',nx);
 for i=1:nx
 	fprintf(fp2,'%f\n',mx(i));
 end
 fclose(fp2);
 
-fp3 = fopen('./grid_FY.dat','w');
+filename = [dir_file,'/grid_FY.dat'];
+fp3 = fopen(filename,'w');
 fprintf(fp3,'%d\n',ny);
 for i=1:ny
 	fprintf(fp3,'%f\n',my(i));

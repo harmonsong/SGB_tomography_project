@@ -1,4 +1,4 @@
-clear; clc;
+ clear; clc;
 
 storepath='./pictures/';
 
@@ -11,15 +11,18 @@ storepath='./pictures/';
 
 file = load("Vs_inter.mat");
 Vs_full = file.vs_inter;
-mx = file.x;
-my = file.y;
+mx0 = file.x;
+my0 = file.y;
+mx = mx0-min(mx0);
+my = my0-min(my0);
 mz = file.z;
 
+dir_file = '../wave_forward/template/parfile/';
 
 %% get Vall(vs), unit km/s
     %vall nx ny nz,  lon,lat,dep
     %Vs_full lat*lon*dep
-Vall = permute(Vs_full, [2,1,3]);
+Vall = permute(Vs_full, [1,2,3]);
 nz=length(mz);ny=length(my);nx=length(mx);
 %% construct velocity array
 
@@ -49,7 +52,7 @@ disp('start to write~');
 
 
 %write fortran
-ncid = netcdf.create('Vsim_fortran_new.nc','netcdf4');%rewrite
+ncid = netcdf.create([dir_file,'Vsim_fortran_new.nc'],'netcdf4');%rewrite
 
 dimid = ones(1,3);%fast mid low
 dimid(1) = netcdf.defDim(ncid,'x',nx);

@@ -13,7 +13,7 @@ my = file.y;
 mz = file.z;
 
 Clat1 = min(my); Clat2 = max(my);
-Xlon = min(mx); Ylat = max(mx);
+Xlon = min(mx); Ylat = min(my);
 lonunit = 2*pi*6359.752/360*cos((Clat1+Clat2)/2/180*pi)*1e3; % unit length of longitude                                    
 latunit = 2*pi*6378.137/360*1e3; % unit length of latitude                        
 
