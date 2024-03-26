@@ -309,7 +309,7 @@ else:
 	plt.title('Media map for {} ({})'.format(pname['title'], pname['unit']))
 	plt.colorbar()
 plt.show()
-# plt.savefig('test.eps')
+plt.savefig('test.png')
 '''	
 #else for the 3D surface case, but failed becaused of ax.plot_surface (shape problem) and set_aspect(scalefactor problem)
 else:
