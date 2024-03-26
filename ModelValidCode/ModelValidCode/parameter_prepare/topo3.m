@@ -9,14 +9,12 @@ clear; clc;
 dir_file = '../wave_forward/template/parfile/';
 
 file = load("Vs_inter.mat");
-mx = file.x';
-my = file.y';
 mz = file.z';
 
 nx = 1000;
 ny = 1000;
-dx = 0.5;
-dy = 0.5;
+dx = 0.6;
+dy = 0.6;
 Xlen = nx*dx;%1500KM
 Ylen = ny*dy;%1600KM
 Zdep = 200;%here doesnot need to exceed bounds

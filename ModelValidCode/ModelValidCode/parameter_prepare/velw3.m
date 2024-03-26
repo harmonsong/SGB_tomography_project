@@ -1,4 +1,4 @@
- clear; clc;
+clear; clc;
 
 storepath='./pictures/';
 
@@ -11,10 +11,8 @@ storepath='./pictures/';
 
 file = load("Vs_inter.mat");
 Vs_full = file.vs_inter;
-mx0 = file.x;
-my0 = file.y;
-mx = mx0-min(mx0);
-my = my0-min(my0);
+mx = file.x;
+my = file.y;
 mz = file.z;
 
 dir_file = '../wave_forward/template/parfile/';
