@@ -8,6 +8,7 @@ Structure
 *.llz
 *.dat
 *.nc
+*.jpg
 tempCodeRunnerFile*
 */__pycache__*
 

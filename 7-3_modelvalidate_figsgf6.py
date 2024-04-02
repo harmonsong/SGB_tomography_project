@@ -1,3 +1,4 @@
+#%%
 #!/usr/bin/env python3
 # -*- conding: utf-8 -*-
 import sys, getopt, os.path
@@ -137,16 +138,18 @@ info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting 
 dir_image = dir_project + info_basic['rdir_image']+'model_validate/'
 if not os.path.exists(dir_image):
     os.makedirs(dir_image)
-dir_CC = dir_project + info_basic['rdir_CC']
+dir_CC = os.getcwd()+'/'+dir_CC_workspace[1:] + info_basic['rdir_CC']
 key_subworks = info_basic['key_subworks']
 M = len(key_subworks)
 
+dir_file = os.getcwd()+'/ModelValidCode/ModelValidCode/parameter_prepare/'
+
 #==============================================================================
 putinrou = [dir_CC + 'CFs_modelvalidate/'+ 'gather_all_modelvalidate.h5']
-syn_stalist = '/home/cjq/ModelValid/Forward/SCB_locat_v2.txt'
-sele_stalist = '/home/cjq/ModelValid/Forward/SCB_locat_v2.txt'
-srclist = '/home/cjq/ModelValid/Forward/virsrc.txt'
-inputpath = '/home/cjq/ModelValid/Forward/template/model_Chen/input/'
+syn_stalist = dir_file + 'stations_in.txt'
+sele_stalist = dir_file + 'stations_in.txt'
+srclist = dir_file + 'stations_virsrc.txt'
+inputpath = dir_project + 'ModelValidate/input/'
 outputpath = 'output/'
 fileFDconf = 'SeisFD3D.conf'
 stride = 1
@@ -178,6 +181,8 @@ for opt, arg in opts:
   elif opt in ('-d', '--stride'):
     stride = int(arg)
 
+os.chdir(dir_project + 'ModelValidate/'+'src'+str(isrc)+'/')
+
 print('\nConfigure:')
 print('  inputpath:\t', inputpath)
 print('  outputpath:\t', outputpath)
@@ -190,7 +195,7 @@ sta_profile = pandas.read_table(srclist, header=None, sep='\\s+')
 net = list(sta_profile[0][:])
 sta = list(sta_profile[1][:])
 for i in range(len(sta)):
-    virsta.append(str(net[i] + '-' + sta[i]))
+    virsta.append(str(str(net[i]) + '-' + str(sta[i])))
 srcsta = virsta[isrc-1]
 print('  srcsta:\t', srcsta)
 #=============================read observed Ccfs====================================
