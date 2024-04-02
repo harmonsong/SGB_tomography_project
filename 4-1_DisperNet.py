@@ -14,7 +14,7 @@ import pandas as pd
 #%%
 flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
 flag_repick = 1 # 0-- no new h5 trans; 1-- yes
-flag_forward = 0 # 0-- no forward; 1-- yes
+flag_forward = 1 # 0-- no forward; 1-- yes
 num_refs = 6 # sort with nearst num_refs centroid
 flag_partrition = 1 # plot partition
 flag_plot_or = 0    # plot non-remove FJ
@@ -68,6 +68,7 @@ key_ds = []
 #filename = dir_project+info_basic['dir_disp_pick_dispernet']+'inv1.txt'
 #nums = np.loadtxt(filename,dtype='int')  
 nums = [1]
+nums = range(1,100)
 nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
     if key_subwork.split('--')[0] in nums:

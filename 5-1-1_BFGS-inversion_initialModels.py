@@ -86,7 +86,7 @@ if os.path.exists(outname_config_fund)==False:
 
 # %%
 V0 = 0.3
-alpha = 0.25
+alpha = 0.22
 #beta = 3
 #A1 = 0.4
 #A2 = 0.1
@@ -140,13 +140,16 @@ def user_defined(z, vs):
     return vp,rho
 
 # %%
-#N = 50
-#dz = 0.006
-#N = 200
-#dz = 0.0015  
-N = 100
-dz = 0.003
+N = 60
+dz = 0.002
+flag_increase1 = 0.0002
+flag_increase2 = 0.0004
+
+#N = 250
+#dz = 0.001
+#flag_increase = 0.000
 flag_relation = 1
+flag_plot = 1
 info_basic['inv_BFGS_layers'] = N
 info_basic['inv_BFGS_dz'] = dz
 info_basic['inv_BFGS_empirical'] = flag_relation
@@ -154,8 +157,18 @@ info_basic['inv_BFGS_empirical'] = flag_relation
 # %%
 layers = np.linspace(1,N,N)
 depths = np.zeros(N)
-for i in range(N):
-    depths[i] = d0 + i*dz
+flag_index1 = 0
+flag_index2 = 0
+for i in range(1,N):
+    depths[i] = depths[i-1] + dz 
+    if depths[i] > 0.05:
+        if flag_index1 == 0:
+            flag_index1 = i
+        depths[i] += flag_increase1*(i-flag_index1)
+    elif depths[i] > 0.1:
+        if flag_index2 == 0:
+            flag_index2 = i
+        depths[i] += flag_increase2*(i-flag_index2)
 Vp = np.zeros(N)
 Vs = np.zeros(N)
 rho = np.zeros(N)
@@ -172,9 +185,9 @@ elif flag_relation == 3:
 # %%
 def plot_initial(Vp,Vs,rho,depths,tag):
     plt.figure(figsize=(8,6))
-    plt.plot(Vp,depths,'r',label='Vp')
-    plt.plot(Vs,depths,'b',label='Vs')
-    plt.plot(rho,depths,'g',label='rho')
+    plt.step(Vp,depths,'r',label='Vp')
+    plt.step(Vs,depths,'b',label='Vs')
+    plt.step(rho,depths,'g',label='rho')
     plt.legend()
     # 翻转y轴
     plt.gca().invert_yaxis()
@@ -190,8 +203,7 @@ def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
             f.write('{} {:.4f} {:.4f} {:.4f} {:.4f}\n'.format(int(layers[i]),depths[i],Vp[i],Vs[i],rho[i]))
 
 # %%
-tag = 1
-flag_plot = 0
+tag =3
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:
     plot_initial(Vp,Vs,rho,depths,tag)
