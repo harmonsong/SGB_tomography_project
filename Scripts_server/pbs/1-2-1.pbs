@@ -6,7 +6,7 @@
 #PBS -o pbs_out/corre_output.log
 #PBS -e pbs_out/corre_error.log
 
-cd /home/songsh/git_repo/F-J_workflow/San_Jasinto/ #F-J server
+cd /home/songsh/git_repo/F-J/SGB_tomography_project/ #F-J server
 
-source activate ccfj
-python -u "1-2_correlation_all.py"
+source activate ccfj3
+python -u "1-2-1_correlation_all.py"

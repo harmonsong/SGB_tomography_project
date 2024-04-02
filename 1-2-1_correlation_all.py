@@ -13,7 +13,7 @@ import pandas as pd
 import yaml
 
 #%%
-nThreads = 240                # 线程数
+nThreads = 320                # 线程数
 
 # %%
 with open('0_config.yml', 'r', encoding='utf-8') as f:
@@ -26,7 +26,7 @@ print('dir_CC_workspace: ', dir_CC_workspace)
 # %%
 name_SAC = 'data_resample/'
 #name_CC = 'CC/CC_40_onebit/'
-name_CC = 'CC/CC_40_prewhiten-onebit/'
+name_CC = 'CC/CC_100_prewhiten/'
 dir_SAC = os.path.join(dir_SAC_workspace,name_SAC)
 dir_CC = os.path.join(dir_CC_workspace,name_CC)
 if not os.path.exists(dir_CC):
@@ -54,9 +54,9 @@ d_len = 32
 #Fs = 500
 Fs = 100
 
-fmax = 40                    # 降采样频率
+fmax = 100                    # 降采样频率
 fftlen = Fs*60*5            # 用于做户相关的时间窗长度
-nf = fmax*10                 # 输出的户相关频点数
+nf = fmax*20                 # 输出的户相关频点数
 fstride = fmax*fftlen/nf/Fs
 f = np.arange(0, nf)*Fs/fftlen*fstride
 dt = 1/np.max(f)
@@ -64,7 +64,7 @@ t = (np.linspace(-len(f)-1,len(f)-1,2*(len(f)-1))+0.5)*dt/2
 
 overlaprate = 0.9
 
-flag_onebit = 1             # 是否进行onebit
+flag_onebit = 0             # 是否进行onebit
 flag_prewhiten = 1          # 是否进行prewhiten
 
 segday = 1                  # 切割的时间段，未实现，只能为1
