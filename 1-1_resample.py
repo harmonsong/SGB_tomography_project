@@ -82,6 +82,7 @@ def Resample(i):
     global fmax
     global factor
 
+    dirname = namelist[i]
     outname = os.path.join(dir_resample,str(day),dirname+'.EHZ.2014.'+str(day)+'.00.00.00')
     if os.path.exists(outname):
         return
@@ -89,8 +90,7 @@ def Resample(i):
 
     if i%200 == 0 and i != 0:
         print(i)
-
-    dirname = namelist[i]
+    
     filename = os.path.join(dir_SAC,str(day),dirname+'.EHZ.2014.'+str(day)+'.00.00.00')
     st = obspy.read(filename)
 
