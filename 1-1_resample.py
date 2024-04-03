@@ -61,7 +61,7 @@ for opt, arg in opts:
         nThreads = int(arg)
 
 d_end  = d_start + d_len
- 
+
 # %%
 def Checkdata(dirname):
     global day
@@ -80,6 +80,10 @@ def Resample(i):
     global fmax
     global factor
 
+    outname = os.path.join(dir_resample,str(day),dirname+'.EHZ.2014.'+str(day)+'.00.00.00')
+    if os.path.exists(outname):
+        return
+
 
     if i%200 == 0 and i != 0:
         print(i)
@@ -92,7 +96,7 @@ def Resample(i):
     st_resampled = st.copy().decimate(factor=factor, strict_length=False)
     
     # 保存到dir_resample中
-    st_resampled.write(os.path.join(dir_resample,str(day),dirname+'.EHZ.2014.'+str(day)+'.00.00.00'),format='SAC')
+    st_resampled.write(outname,format='SAC')
 
 # %%
 stainfo = pd.read_excel(stalistname)
