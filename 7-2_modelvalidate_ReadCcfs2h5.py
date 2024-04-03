@@ -16,7 +16,7 @@ print('dir_SAC_workspace: ', dir_SAC_workspace)
 print('dir_CC_workspace: ', dir_CC_workspace)
 
 #%% 
-name_CC = 'CC/CC_40_prewhiten/'  
+name_CC = 'CC/CC_100_prewhiten/'  
 dir_CC = os.path.join(dir_CC_workspace,name_CC)
 filename = dir_CC+'info_CC.npy'
 info_CC = np.load(filename, allow_pickle='TRUE').item()

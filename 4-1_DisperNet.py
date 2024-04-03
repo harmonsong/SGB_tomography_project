@@ -130,8 +130,10 @@ if flag_repick == 1:
         #amp_or = data['ds_linear'][:][0][:,f<fmax]
         ds_remove = data['ds_remove'][:][0]
         ds_linear = data['ds_linear'][:][0]
-        amp = plotlib.smooth_ds(ds_remove)
-        amp_or = plotlib.smooth_ds(ds_linear)
+        #amp = plotlib.smooth_ds(ds_remove)
+        #amp_or = plotlib.smooth_ds(ds_linear)
+        amp = ds_remove
+        amp_or = ds_linear
         amp = amp[:,np.logical_and(f>fmin,f<fmax)]
         amp = amp[np.logical_and(c>cmin,c<cmax),:]
         amp_or = amp_or[:,np.logical_and(f>fmin,f<fmax)]
