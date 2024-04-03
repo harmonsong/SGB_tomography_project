@@ -40,8 +40,8 @@ y_start = 2014
 y_end = 2015
 #d_start = 132
 d_start = 128
+d_len = 31
 #d_end = 159
-d_end = 159
 Fs = 500
 factor = int(Fs/fmax)
 
@@ -60,7 +60,8 @@ for opt, arg in opts:
     elif opt in ("-n", "--nThreads"):
         nThreads = int(arg)
 
-
+d_end  = d_start + d_len
+ 
 # %%
 def Checkdata(dirname):
     global day
