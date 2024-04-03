@@ -25,7 +25,7 @@ print('dir_SAC_workspace: ', dir_SAC_workspace)
 name_SAC = '2014/'
 name_SAC_new =  'resample_'+str(fmax)+'Hz/'
 dir_SAC = os.path.join(dir_SAC_workspace,name_SAC)
-dir_resample = os.path.join('./data_resample/',name_SAC_new)
+dir_resample = 'data_resample/'+name_SAC_new
 if not os.path.exists(dir_resample):
     os.mkdir(dir_resample)
 
