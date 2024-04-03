@@ -15,7 +15,7 @@ dir_CC_workspace = dir_config['dir_CC_workspace']
 print('dir_CC_workspace: ', dir_CC_workspace)
 
 #%%
-name_CC = 'CC/CC_40_prewhiten-onebit/'
+name_CC = 'CC/CC_100_prewhiten/'
 name_stack = 'gather_all.h5'
 dir_CC = os.path.join(dir_CC_workspace,name_CC)
 

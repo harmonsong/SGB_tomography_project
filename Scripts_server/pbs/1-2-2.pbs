@@ -8,5 +8,9 @@
 
 cd /home/songsh/git_repo/F-J/SGB_tomography_project/ #F-J server
 
+d_len="$dlen"
+#d_len=2
+d_start="$dstart"
+
 source activate ccfj3
-python -u "1-2-2_correlation_day.py"
+python -u "1-2-2_correlation_day.py" -s "$d_start" -l "$d_len"
