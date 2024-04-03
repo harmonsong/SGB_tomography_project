@@ -25,9 +25,9 @@ print('dir_SAC_workspace: ', dir_SAC_workspace)
 print('dir_CC_workspace: ', dir_CC_workspace)
 
 # %%
-name_SAC = 'data_resample/'
+name_SAC = 'resample_200Hz/'
 #name_CC = 'CC/CC_40_onebit/'
-name_CC = 'CC/CC_90_prewhiten/'
+name_CC = 'CC/CC_100_prewhiten/'
 dir_SAC = os.path.join(dir_SAC_workspace,name_SAC)
 dir_CC = os.path.join(dir_CC_workspace,name_CC)
 print('dir_CC: ', dir_CC)
@@ -63,9 +63,9 @@ for opt, arg in opts:
 
 d_end = d_start + d_len
 #Fs = 500
-Fs = 100
+Fs = 200
 
-fmax = 90                    # 降采样频率
+fmax = 100                    # 降采样频率
 fftlen = Fs*60*5            # 用于做户相关的时间窗长度
 nf = fmax*20                 # 输出的户相关频点数
 fstride = fmax*fftlen/nf/Fs

@@ -140,10 +140,10 @@ def user_defined(z, vs):
     return vp,rho
 
 # %%
-N = 60
+N = 40
 dz = 0.002
-flag_increase1 = 0.0002
-flag_increase2 = 0.0004
+flag_increase1 = 0.0005
+flag_increase2 = 0.001
 
 #N = 250
 #dz = 0.001
@@ -161,7 +161,7 @@ flag_index1 = 0
 flag_index2 = 0
 for i in range(1,N):
     depths[i] = depths[i-1] + dz 
-    if depths[i] > 0.05:
+    if depths[i] > 0.03:
         if flag_index1 == 0:
             flag_index1 = i
         depths[i] += flag_increase1*(i-flag_index1)
