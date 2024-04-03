@@ -14,7 +14,7 @@ import yaml
 
 #%%
 nThreads = 20
-fmax = 200                    # 降采样频率
+fmax = 250                    # 降采样频率
 
 # %%
 with open('0_config.yml', 'r', encoding='utf-8') as f:
@@ -42,7 +42,7 @@ d_start = 128
 #d_end = 159
 d_end = 159
 Fs = 500
-factor = Fs/fmax
+factor = int(Fs/fmax)
 
 
 # %%
