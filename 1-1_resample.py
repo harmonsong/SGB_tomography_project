@@ -61,6 +61,8 @@ for opt, arg in opts:
         nThreads = int(arg)
 
 d_end  = d_start + d_len
+print('d_start: ', d_start)
+print('d_end: ', d_end)
 
 # %%
 def Checkdata(dirname):
