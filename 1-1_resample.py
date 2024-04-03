@@ -21,6 +21,7 @@ fmax = 250                    # 降采样频率
 with open('0_config.yml', 'r', encoding='utf-8') as f:
     dir_config = yaml.load(f.read(), Loader=yaml.FullLoader)
 dir_SAC_workspace = dir_config['dir_SAC_workspace']
+dir_SAC_workspace = '/share/data/California/SJFZ_nodal/'
 print('dir_SAC_workspace: ', dir_SAC_workspace)
 # %%
 name_SAC = '2014/'
