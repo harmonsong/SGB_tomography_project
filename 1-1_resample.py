@@ -109,11 +109,15 @@ for y in range(y_start,y_end):
             days.append(d)
             print("year"+year+" day"+day +" nsta "+ str(nsta))
             # using multiThreads to read data
-            pool = ThreadPoolExecutor(max_workers = nThreads)
-            start0 = time.time()
-            for i in range(nsta):
-                pool.submit(Resample,i)
-            pool.shutdown()
+            if nThreads > 1:
+                pool = ThreadPoolExecutor(max_workers = nThreads)
+                start0 = time.time()
+                for i in range(nsta):
+                    pool.submit(Resample,i)
+                pool.shutdown()
+            else:
+                for i in range(nsta):
+                    Resample(i)
 # %%
 
 
