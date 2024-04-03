@@ -1,4 +1,5 @@
 # %%
+import sys, getopt
 import numpy as np
 import obspy
 from obspy import UTCDateTime
@@ -43,6 +44,21 @@ d_start = 128
 d_end = 159
 Fs = 500
 factor = int(Fs/fmax)
+
+# %%
+try:
+    opts, args = getopt.getopt(sys.argv[1:], "s:l:n:", ["start=", "len=", "nThreads="])
+except getopt.GetoptError:
+    print('1-2-2_correlation_day.py -s <day start> -l <day len>')
+    sys.exit(2)
+
+for opt, arg in opts:
+    if opt in ("-s", "--start"):
+        d_start = int(arg)
+    elif opt in ("-l", "--len"):
+        d_len = int(arg)
+    elif opt in ("-n", "--nThreads"):
+        nThreads = int(arg)
 
 
 # %%
