@@ -98,8 +98,6 @@ def Resample(i):
     
     # 保存到dir_resample中
     st_resampled.write(outname,format='SAC')
-    print('outname: ', outname)
-    print('filename: ', filename)
 
 # %%
 stainfo = pd.read_excel(stalistname)
@@ -126,6 +124,7 @@ for y in range(y_start,y_end):
             if Checkdata(dirname):
                 namelist.append(dirname)
         nsta = len(namelist)
+        print(namelist)
         # at least two stations needs
         if nsta >1:
             flag_d += 1
