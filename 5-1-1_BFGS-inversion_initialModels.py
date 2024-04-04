@@ -86,7 +86,7 @@ if os.path.exists(outname_config_fund)==False:
 
 # %%
 V0 = 0.3
-alpha = 0.22
+alpha = 0.25
 #beta = 3
 #A1 = 0.4
 #A2 = 0.1
@@ -140,10 +140,10 @@ def user_defined(z, vs):
     return vp,rho
 
 # %%
-N = 40
-dz = 0.002
-flag_increase1 = 0.0005
-flag_increase2 = 0.001
+N = 60
+dz = 0.005
+flag_increase1 = 0.000
+flag_increase2 = 0.00
 
 #N = 250
 #dz = 0.001
@@ -203,7 +203,7 @@ def write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag):
             f.write('{} {:.4f} {:.4f} {:.4f} {:.4f}\n'.format(int(layers[i]),depths[i],Vp[i],Vs[i],rho[i]))
 
 # %%
-tag =3
+tag =4
 write_initial_model(dir_file,layers,depths,Vp,Vs,rho,tag)
 if flag_plot == 1:
     plot_initial(Vp,Vs,rho,depths,tag)

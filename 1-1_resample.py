@@ -85,8 +85,6 @@ def Resample(i):
 
     dirname = namelist[i]
     outname = os.path.join(dir_resample,str(day),dirname+'.EHZ.2014.'+str(day)+'.00.00.00')
-    if os.path.exists(outname):
-        return
 
 
     if i%200 == 0 and i != 0:
@@ -100,6 +98,8 @@ def Resample(i):
     
     # 保存到dir_resample中
     st_resampled.write(outname,format='SAC')
+    print('outname: ', outname)
+    print('filename: ', filename)
 
 # %%
 stainfo = pd.read_excel(stalistname)
