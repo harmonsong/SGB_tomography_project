@@ -94,7 +94,7 @@ def Resample(i):
     st = obspy.read(filename)
 
     # 对每个通道的数据进行重采样
-    st_resampled = st.copy().decimate(factor=factor, strict_length=False)
+    st_resampled = st[0].copy().decimate(factor=factor, strict_length=False)
     
     # 保存到dir_resample中
     st_resampled.write(outname,format='SAC')
