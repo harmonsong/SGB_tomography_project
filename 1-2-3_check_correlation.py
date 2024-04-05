@@ -16,7 +16,7 @@ d_start = 128
 d_len = 31
 flag = 0 # 0--ncfs; 1--stack 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "s:l:flag:", ["start=", "len=", "flag="])
+    opts, args = getopt.getopt(sys.argv[1:], "s:l:f:", ["start=", "len=", "flag="])
 except getopt.GetoptError:
     print('1-2-2_correlation_day.py -s <day start> -l <day len>')
     sys.exit(2)
@@ -26,7 +26,7 @@ for opt, arg in opts:
     elif opt in ("-l", "--len"):
         d_len = int(arg)
     elif opt in ("-f", "--flag"):
-        flag = 1
+        flag = int(arg)
 
 
 if flag == 0:
