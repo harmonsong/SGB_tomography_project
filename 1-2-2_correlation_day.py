@@ -67,7 +67,7 @@ Fs = 250
 
 fmax = 150                    # 降采样频率
 fftlen = Fs*60*5            # 用于做户相关的时间窗长度
-nf = fmax*20                 # 输出的户相关频点数
+nf = fmax*4                 # 输出的户相关频点数
 fstride = fmax*fftlen/nf/Fs
 f = np.arange(0, nf)*Fs/fftlen*fstride
 dt = 1/np.max(f)
