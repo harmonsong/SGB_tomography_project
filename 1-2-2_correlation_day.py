@@ -27,7 +27,7 @@ print('dir_CC_workspace: ', dir_CC_workspace)
 # %%
 name_SAC = 'resample_250Hz/'
 #name_CC = 'CC/CC_40_onebit/'
-name_CC = 'CC/CC_100_prewhiten/'
+name_CC = 'CC/CC_150_prewhiten/'
 dir_SAC = os.path.join(dir_SAC_workspace,name_SAC)
 dir_CC = os.path.join(dir_CC_workspace,name_CC)
 print('dir_CC: ', dir_CC)
