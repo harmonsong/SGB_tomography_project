@@ -68,7 +68,7 @@ key_ds = []
 #filename = dir_project+info_basic['dir_disp_pick_dispernet']+'inv1.txt'
 #nums = np.loadtxt(filename,dtype='int')  
 nums = [1]
-nums = range(300,600)
+nums = range(0,600)
 nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
     if key_subwork.split('--')[0] in nums:
