@@ -22,12 +22,12 @@ def submit_job(source_this,jobs_status,dir_origin,email_content):
         results = subprocess.run(shell_order, shell=True, check=True, capture_output=True,text=True)
         output = results.stdout.strip()
         job_id = output.split()[1][1:-1]
-        print("Job submitted successfully! Job ID: ", job_id, '; source: ', str(source_this))
-        email_content.append('Job submitted successfully! Job ID: '+job_id+ '; source: '+ str(source_this))
+        print("Job submitted successfully! Job ID: ", str(job_id), '; source: ', str(source_this))
+        email_content.append('Job submitted successfully! Job ID: '+str(job_id)+ '; source: '+ str(source_this))
         jobs_status[source_this] = 1
     except subprocess.CalledProcessError as e:
-        email_content.append('Job finished fail! Job ID: '+job_id+ ' source: '+ str(source_this))
-        print("Job finished fail! Job ID: ", job_id, ' source: ', str(source_this))
+        email_content.append('Job finished fail! Job ID: '+str(job_id)+ ' source: '+ str(source_this))
+        print("Job finished fail! Job ID: ", str(job_id), ' source: ', str(source_this))
         jobs_status[source_this] = -1
     return job_id, jobs_status, email_content
 
@@ -40,13 +40,15 @@ def check_status(jobs_status):
     global dir_origin
 
     email_content = []
-    flag_pend = np.where(np.array(list(jobs_status.values())) == 1)[0]
+    status  = np.array(list(jobs_status.values()))
+    flag_pend = np.where(status==1)[0]
     # submit jobs if there are spaces
     while len(flag_pend) < flag_max and source_this <= source_end:
         job_id,jobs_status,email_content = submit_job(source_this,jobs_status,dir_origin,email_content)
         jobs_ids[source_this] = job_id
         source_this += 1
-        flag_pend = np.where(jobs_status==1)[0]
+        status  = np.array(list(jobs_status.values()))
+        flag_pend = np.where(status==1)[0]
     # check if status has changed
     for job in jobs_ids.keys():
         job_id = jobs_ids[job]
@@ -56,31 +58,31 @@ def check_status(jobs_status):
         output = results.stdout.strip()
         if 'not' in output:
             jobs_status[job] = 3
-            email_content.append('Job finished successfully! Job ID: '+job_id + ' source: '+ str(job))
-            print("Job finished successfully! Job ID: ", job_id, ' source: ', str(job))
+            email_content.append('Job finished successfully! Job ID: '+str(job_id), + ' source: '+ str(job))
+            print("Job finished successfully! Job ID: ", str(job_id),' source: ', str(job))
         else:
             state = output.split()[10]
 
         if state == 'DONE':
             jobs_status[job] = 3
-            email_content.append('Job finished successfully! Job ID: '+job_id + ' source: '+ str(job))
-            print("Job finished successfully! Job ID: ", job_id, ' source: ', str(job))
+            email_content.append('Job finished successfully! Job ID: '+str(job_id)+ ' source: '+ str(job))
+            print("Job finished successfully! Job ID: ", str(job_id), ' source: ', str(job))
         elif state == 'EXIT':
             jobs_status[job] = -1
-            email_content.append('Job finished fail! Job ID: '+job_id + ' source: '+ str(job))
-            print("Job finished fail! Job ID: ", job_id, ' source: ', str(job))
+            email_content.append('Job finished fail! Job ID: '+str(job_id) + ' source: '+ str(job))
+            print("Job finished fail! Job ID: ", str(job_id), ' source: ', str(job))
         elif state == 'RUN' and jobs_status[job] != 2:
             jobs_status[job] = 2
-            email_content.append('Job start running! Job ID: '+job_id + ' source: '+ str(job))
-            print("Job start running! Job ID: ", job_id, ' source: ', str(job))
-    return jobs_status,email_content
+            email_content.append('Job start running! Job ID: '+str(job_id) + ' source: '+ str(job))
+            print("Job start running! Job ID: ", str(job_id), ' source: ', str(job))
+    return email_content,jobs_status
         
 
 flag_email = 1
 # parameters
 flag_max = 10 # maximum pending jobs
-source_start = 5 # starting source num
-source_end = 5 # ending source num
+source_start = 7 # starting source num
+source_end = 63 # ending source num
 jobs_status = {} 
 # initialization
 for source in range(source_start,source_end+1):
@@ -88,12 +90,12 @@ for source in range(source_start,source_end+1):
 jobs_ids = {}
 source_this = source_start
 
-while 0 in jobs_status and 1 in jobs_status:
+while 0 in list(jobs_status.values()) or 1 in list(jobs_status.values()) or 2 in list(jobs_status.values()):
     email_content,jobs_status = check_status(jobs_status)
     if email_content != [] and flag_email:
         email_to = [user_recive]
         email_title = 'Taiyi RaWave Jobs status change'
         email_content = '\n'.join(email_content)
         yag_server.send(email_to, email_title, email_content)
-    time.sleep(30)
+    time.sleep(20)
 yag_server.close()
