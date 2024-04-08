@@ -8,8 +8,8 @@ Stalat = Staloc.lat_sta';
 %%
 file = load("Vs_inter.mat");
 Vs_full = file.vs_inter;
-lon = file.lon;
-lat = file.lat;
+lon = file.lon_sta;
+lat = file.lat_sta;
 mz = file.z;
 
 Clat1 = min(lat); Clat2 = max(lat);
