@@ -268,6 +268,6 @@ else:
   plt.ylabel('stress (GPa)')
   #plt.ylim([vmin,vmax])
 plt.show()
-
+plt.savefig('test.png')
 
 
