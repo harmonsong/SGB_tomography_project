@@ -6,7 +6,7 @@ Staloc = load("sta_in.mat");
 Stalon = Staloc.lon_sta';
 Stalat = Staloc.lat_sta';
 %%
-file = load("Vs_inter.mat");
+file = load("Vs_inter_smooth.mat");
 Vs_full = file.vs_inter;
 lon = file.lon_sta;
 lat = file.lat_sta;

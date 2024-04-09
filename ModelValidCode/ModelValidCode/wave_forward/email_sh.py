@@ -52,7 +52,7 @@ def check_status(jobs_status):
     # check if status has changed
     for job in jobs_ids.keys():
         job_id = jobs_ids[job]
-        if jobs_status[job] < -1 or jobs_status[job] > 2:
+        if jobs_status[job] < 0 or jobs_status[job] > 2:
             continue
         results = subprocess.run('bjobs '+job_id, shell=True, check=True, capture_output=True,text=True)
         output = results.stdout.strip()
@@ -68,7 +68,7 @@ def check_status(jobs_status):
             email_content.append('Job finished successfully! Job ID: '+str(job_id)+ ' source: '+ str(job))
             print("Job finished successfully! Job ID: ", str(job_id), ' source: ', str(job))
         elif state == 'EXIT':
-            jobs_status[job] = -1
+            jobs_status[job] = -1:
             email_content.append('Job finished fail! Job ID: '+str(job_id) + ' source: '+ str(job))
             print("Job finished fail! Job ID: ", str(job_id), ' source: ', str(job))
         elif state == 'RUN' and jobs_status[job] != 2:
@@ -81,7 +81,7 @@ def check_status(jobs_status):
 flag_email = 1
 # parameters
 flag_max = 10 # maximum pending jobs
-source_start = 7 # starting source num
+source_start = 1 # starting source num
 source_end = 63 # ending source num
 jobs_status = {} 
 # initialization
