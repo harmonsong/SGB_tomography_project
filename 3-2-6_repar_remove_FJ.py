@@ -78,6 +78,7 @@ stalist_all = stainfo['Station'].tolist()
 #%% 
 ncffile = h5py.File(dir_CC + 'gather_all.h5','r')
 ncfs = ncffile['ncfs'][:]
+#f = info_basic_bi['f']
 f = ncffile['f'][:]
 count_all = ncffile['count'][:]
 ncffile.close()

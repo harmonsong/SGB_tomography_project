@@ -14,7 +14,7 @@ import pandas as pd
 #%%
 flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
 flag_repick = 1 # 0-- no new h5 trans; 1-- yes
-flag_forward = 1 # 0-- no forward; 1-- yes
+flag_forward = 0 # 0-- no forward; 1-- yes
 num_refs = 4 # sort with nearst num_refs centroid
 flag_partrition = 1 # plot partition
 flag_plot_or = 0    # plot non-remove FJ
@@ -60,19 +60,21 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['rdir_ds']
-key_ds = info_basic['key_subworks']
+key_ds = info_basic['key_subworks'][0:10]
 #key_ds  = info_basic['key_subworks_repick']
 
 
-key_ds = []
+#key_ds = []
 #filename = dir_project+info_basic['rdir_inv_BFGS']+'inv4.txt'
 #nums = np.loadtxt(filename,dtype='int')  
+"""
 nums = [23,54,56,55,80]
 #nums = range(0,600)
 nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
     if key_subwork.split('--')[0] in nums:
         key_ds.append(key_subwork)
+"""
 
 
 """
@@ -100,12 +102,10 @@ with open(dir_project+'Basic_info.yml', 'w', encoding='utf-8') as f:
    yaml.dump(data=info_basic, stream=f, allow_unicode=True)
 
 #%%
-r_max = info_basic_bi['r_max']
-"""
+#r_max = info_basic_bi['r_max']
 r_max = {}
 for key in key_ds:
     r_max[key] = 10
-"""
 
 #%%
 fmax = 30
