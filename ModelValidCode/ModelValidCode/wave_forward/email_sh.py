@@ -68,7 +68,7 @@ def check_status(jobs_status):
             email_content.append('Job finished successfully! Job ID: '+str(job_id)+ ' source: '+ str(job))
             print("Job finished successfully! Job ID: ", str(job_id), ' source: ', str(job))
         elif state == 'EXIT':
-            jobs_status[job] = -1:
+            jobs_status[job] = -1
             email_content.append('Job finished fail! Job ID: '+str(job_id) + ' source: '+ str(job))
             print("Job finished fail! Job ID: ", str(job_id), ' source: ', str(job))
         elif state == 'RUN' and jobs_status[job] != 2:
