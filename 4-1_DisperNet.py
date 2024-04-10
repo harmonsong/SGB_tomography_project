@@ -13,12 +13,12 @@ import pandas as pd
 
 #%%
 flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
-flag_repick = 1 # 0-- no new h5 trans; 1-- yes
+flag_repick = 0 # 0-- no new h5 trans; 1-- yes
 flag_forward = 1 # 0-- no forward; 1-- yes
 num_refs = 8 # sort with nearst num_refs centroid
 flag_partrition = 1 # plot partition
 flag_plot_or = 0    # plot non-remove FJ
-num_near = 4        # add nearest num_near dispersion picks
+r_near = 15        # add nearest num_near dispersion picks
 
 #%%
 if flag_project == 0:
@@ -53,15 +53,45 @@ info_basic_bi = np.load(filename_bi, allow_pickle='TRUE').item()      # setting 
 stainfo = pd.read_excel(info_basic['stalistname_all'])
 nsta_all = len(stainfo.iloc[:,0])
 stalist_all = stainfo['Station'].tolist()
-lat_all = stainfo['latitude'].tolist() 
-lon_all = stainfo['longitude'].tolist()
+lat_stations_all = stainfo['latitude'].tolist() 
+lon_stations_all = stainfo['longitude'].tolist()
+
+# Affine transformation
+def compute_affine_transform(original_points, target_points):
+    A_matrix = np.array([[original_points[0][0], original_points[0][1], 1, 0, 0, 0],
+                         [0, 0, 0, original_points[0][0], original_points[0][1], 1],
+                         [original_points[1][0], original_points[1][1], 1, 0, 0, 0],
+                         [0, 0, 0, original_points[1][0], original_points[1][1], 1],
+                         [original_points[2][0], original_points[2][1], 1, 0, 0, 0],
+                         [0, 0, 0, original_points[2][0], original_points[2][1], 1]])
+
+    A1_B1_C1 = np.array([target_points[0][0], target_points[0][1], target_points[1][0], target_points[1][1], target_points[2][0], target_points[2][1]])
+
+    coefficients = np.linalg.solve(A_matrix, A1_B1_C1)
+
+    affine_matrix = np.array([[coefficients[0], coefficients[1], coefficients[2]],
+                               [coefficients[3], coefficients[4], coefficients[5]],
+                               [0, 0, 1]])
+
+    return affine_matrix
+lon_stations_all_new = []
+lat_stations_all_new = []
+for sta in stalist_all:
+    if int(sta[1:3]) <= 60:
+        lon_stations_all_new.append(lon_stations_all[stalist_all.index(sta)])
+        lat_stations_all_new.append(lat_stations_all[stalist_all.index(sta)])
+refs = ['R0101','R6001','R6020']
+lon_refs = [lon_stations_all[stalist_all.index(ref)] for ref in refs]
+lat_refs = [lat_stations_all[stalist_all.index(ref)] for ref in refs]
+loc_refs = np.column_stack([lon_refs,lat_refs])
+loc_refs_new = np.array([[0,0],[600,0],[600,600]])
+affine_matrix = compute_affine_transform(loc_refs, loc_refs_new)
 
 faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['rdir_ds']
 dir_partition = dir_project + info_basic['rdir_partition']
-key_ds = info_basic['key_subworks']
 #key_ds  = info_basic['key_subworks_repick']
 
 
@@ -75,7 +105,7 @@ nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
     if key_subwork.split('--')[0] in nums:
         key_ds.append(key_subwork)
-
+key_ds = info_basic['key_subworks']
 
 
 """
@@ -243,7 +273,7 @@ while fileList_or != []:
 print('fmax = '+str(fmax))
 v_min = 0.01
 #dispernet.App(r_flag = r_max,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.8, semiAutoRange=0.1, autoT=True, url='http://10.20.64.63:8514')
-dispernet.App(info_basic,lon_all,lat_all,fileList,num_near = num_near,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.03, autoT=True, url='http://10.20.64.63:8514')
+dispernet.App(info_basic,lon_stations_all,lat_stations_all,fileList,r_near = r_near,matrix = affine_matrix,faults = faults,file_project = file_project,flag_plot_or=flag_plot_or,flag_plot_partrition=flag_partrition,vmin = v_min,oldfile=old_curve_path,oldkeys= key_olds,fundfile = fund_curve_path,overfile = over_curve_path,fundkeys = key_fund,filePath=inputfile, curveFilePath=outputfile,freqSeries=f[f<fmax], trigerMode=False, searchStep=2, cmap='jet', periodCutRate=0.2, semiAutoRange=0.03, autoT=True, url='http://10.20.64.63:8514')
 
 # transfer training
 #dispernet.createTrainSet('./trainSetDAS.h5', inputfile, outputfile)
