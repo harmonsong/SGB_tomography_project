@@ -398,26 +398,19 @@ def extract_sync(isrc,dir_src,flag_maxd,flag_SNRmin,f_rick_c,t_rick_shift,bands,
 
   return wavesync_T, waveobsc_T, r_plot,t
 
-
-wavesync_Ts = {}
-waveobsc_Ts = {}
-r_plots = {}
 #bands = np.array([[1/30,1/15],[1/18,1/12],[1/15,1/10],[1/12,1/7],[1/10,1/5]])
 bands = np.array([[1/10,1/5], [1/12,1/7] ,[1/15,1/10], [1/30,1/15]])
 dir_input = dir_project + 'ModelValidate/template/input/'
-for isrc in range(48,62):
+for isrc in range(55,64):
     time0 = time.time()
 #for isrc in range(1,2):
     dir_src = dir_project + 'ModelValidate/src'+str(isrc)+'/'
     wavesync_T, waveobsc_T, r_plot,t = extract_sync(isrc,dir_src,flag_maxd,flag_SNRmin,f_rick_c,t_rick_shift,bands,CC_array,CC_table,freq,srclist,sele_stalist,syn_stalist)
-    wavesync_Ts[isrc] = wavesync_T
-    waveobsc_Ts[isrc] = waveobsc_T
-    r_plots[isrc] = r_plot
     print('isrc: ', isrc, '  time: ', time.time()-time0)
     data = {}
-    data['wavesync_T'] = wavesync_Ts[isrc]
-    data['waveobsc_T'] = waveobsc_Ts[isrc]
-    data['r_plot'] = r_plots[isrc]
+    data['wavesync_T'] = wavesync_T
+    data['waveobsc_T'] = waveobsc_T
+    data['r_plot'] = r_plot
     data['t'] = t
     if os.path.exists(dir_src+'waveform.npy'):
         os.remove(dir_src+'waveform.npy')

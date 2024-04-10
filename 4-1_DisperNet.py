@@ -15,7 +15,7 @@ import pandas as pd
 flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
 flag_repick = 1 # 0-- no new h5 trans; 1-- yes
 flag_forward = 1 # 0-- no forward; 1-- yes
-num_refs = 4 # sort with nearst num_refs centroid
+num_refs = 8 # sort with nearst num_refs centroid
 flag_partrition = 1 # plot partition
 flag_plot_or = 0    # plot non-remove FJ
 num_near = 4        # add nearest num_near dispersion picks
@@ -60,6 +60,7 @@ faults = np.load('clark_faults.npy', allow_pickle='TRUE').item()
 
 #%%
 dir_ds = dir_project + info_basic['rdir_ds']
+dir_partition = dir_project + info_basic['rdir_partition']
 key_ds = info_basic['key_subworks']
 #key_ds  = info_basic['key_subworks_repick']
 
@@ -195,16 +196,22 @@ fileList.append(fileList_or[0])
 fileList_or.pop(0)
 fileList_all = os.listdir(inputfile)
 
+key_subworks_all = info_basic['key_subworks']
+lat_centroid_partition_all = []
+lon_centroid_partition_all = []
+for key in key_subworks_all:
+    filepath = dir_partition + str(key) + '.txt'
+    stations_this, lat_stations_this, lon_stations_this = np.loadtxt(filepath, dtype='str' , unpack=True)
+    lat_centroid_partition_all.append(np.mean(lat_stations_this.astype(float)))
+    lon_centroid_partition_all.append(np.mean(lon_stations_this.astype(float)))
+lat_centroid_partition_all = np.array(lat_centroid_partition_all)
+lon_centroid_partition_all = np.array(lon_centroid_partition_all)
+
 while fileList_or != []:
     key_ref = fileList[-1][fileList[-1].find('_')+1:fileList[-1].find('.h5')]
     loc_ref = loc_ds[key_ref]
 
-    
-    dist = []
-    for file in fileList_all:
-        key = file[file.find('_')+1:file.find('.h5')]
-        loc = loc_ds[key]
-        dist.append(np.sqrt((loc[0]-loc_ref[0])**2+(loc[1]-loc_ref[1])**2))
+    dist = (lat_centroid_partition_all-loc_ref[0])**2+(lon_centroid_partition_all-loc_ref[1])**2
     
     #找到dist中最小的num_refs个值
     key_refs = []
@@ -213,8 +220,8 @@ while fileList_or != []:
 
     indexs = np.argsort(dist)
     for i in range(num_refs):
-        key_refs.append(fileList_all[indexs[i]])
-        loc_refs.append(loc_ds[fileList_all[indexs[i]][fileList_all[indexs[i]].find('_')+1:fileList_all[indexs[i]].find('.h5')]])
+        key_refs.append(key_subworks_all[indexs[i]])
+        loc_refs.append([lat_centroid_partition_all[indexs[i]],lon_centroid_partition_all[indexs[i]]])
     #print(key_refs)
     
     for file in fileList_or:
