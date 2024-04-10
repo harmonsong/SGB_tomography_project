@@ -42,13 +42,6 @@ def check_status(jobs_status):
     email_content = []
     status  = np.array(list(jobs_status.values()))
     flag_pend = np.where(status==1)[0]
-    # submit jobs if there are spaces
-    while len(flag_pend) < flag_max and source_this <= source_end:
-        job_id,jobs_status,email_content = submit_job(source_this,jobs_status,dir_origin,email_content)
-        jobs_ids[source_this] = job_id
-        source_this += 1
-        status  = np.array(list(jobs_status.values()))
-        flag_pend = np.where(status==1)[0]
     # check if status has changed
     for job in jobs_ids.keys():
         job_id = jobs_ids[job]
@@ -75,6 +68,13 @@ def check_status(jobs_status):
             jobs_status[job] = 2
             email_content.append('Job start running! Job ID: '+str(job_id) + ' source: '+ str(job))
             print("Job start running! Job ID: ", str(job_id), ' source: ', str(job))
+    # submit jobs if there are spaces
+    while len(flag_pend) < flag_max and source_this <= source_end:
+        job_id,jobs_status,email_content = submit_job(source_this,jobs_status,dir_origin,email_content)
+        jobs_ids[source_this] = job_id
+        source_this += 1
+        status  = np.array(list(jobs_status.values()))
+        flag_pend = np.where(status==1)[0]
     return email_content,jobs_status
         
 
