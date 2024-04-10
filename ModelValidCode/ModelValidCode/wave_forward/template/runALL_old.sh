@@ -1,5 +1,6 @@
 #!/bin/bash
 #BSUB -L /bin/bash
+#BSUB -J RAwave
 #BSUB -q medium
 #BSUB -n 200
 #BSUB -R "span[ptile=40]"

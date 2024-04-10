@@ -1,7 +1,9 @@
+#!/bin/bash
 for ((i=1;i<=60;i++))
 do
-{
+{   
     cd src$i/
+    pwd
     rm -rf input/
     rm -rf bin/
     rm -rf checkpoint/
@@ -12,4 +14,6 @@ do
     rm *.mplstyle
     rm *.sh
     rm *.py
+    cd ../
 }
+done

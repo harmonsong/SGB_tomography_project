@@ -404,7 +404,7 @@ r_plots = {}
 #bands = np.array([[1/30,1/15],[1/18,1/12],[1/15,1/10],[1/12,1/7],[1/10,1/5]])
 bands = np.array([[1/10,1/5], [1/12,1/7] ,[1/15,1/10], [1/30,1/15]])
 dir_input = dir_project + 'ModelValidate/template/input/'
-for isrc in range(4,5):
+for isrc in range(9,11):
     time0 = time.time()
 #for isrc in range(1,2):
     dir_src = dir_project + 'ModelValidate/src'+str(isrc)+'/'

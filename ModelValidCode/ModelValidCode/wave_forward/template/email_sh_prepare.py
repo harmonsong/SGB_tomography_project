@@ -18,7 +18,7 @@ def submit_job(job_status,dir_origin,email_content):
     # submit job
     try:
         #os.chdir(dir_origin+'/template/')
-        shell_order = 'bsub < runALL.sh'
+        shell_order = "bsub -J 'template' < runALL.sh"
         results = subprocess.run(shell_order, shell=True, check=True, capture_output=True,text=True)
         output = results.stdout.strip()
         job_id = output.split()[1][1:-1]
