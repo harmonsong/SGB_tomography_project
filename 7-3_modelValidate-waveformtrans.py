@@ -12,6 +12,23 @@ import netCDF4 as nc
 import pandas as pd
 import time
 import copy
+import netCDF4 as nc
+
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:], 'hl:s:e:', ['help', 'start', 'end'])
+except getopt.GetoptError:
+    sys.exit(2)
+start = 0
+end = 0
+for opt, arg in opts:
+    if opt in ('-h', '--help'):
+        sys.exit()
+    elif opt in ('-s', '--start'):
+        start = int(arg)
+    elif opt in ('-e', '--end'):
+        end = int(arg)
+
 
 flag_project = 1
 if flag_project == 0:
@@ -23,7 +40,7 @@ elif flag_project == 2:
 with open(file_project, 'r', encoding='utf-8') as f:
     proj = yaml.load(f.read(), Loader=yaml.FullLoader)
 name_project = proj['name']
-name_project = 'project_repartition_v4.0/output_repar_v9.5_01--10-16Hz/'
+#name_project = 'project_repartition_v4.0/output_repar_v9.5_01--10-16Hz/'
 
 with open('0_config.yml', 'r', encoding='utf-8') as f:
     dir_config = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -173,8 +190,8 @@ CC_table = CC_prof[0]
 f_prof = pandas.read_hdf(putinrou[0], 'freq')
 freq = np.array(f_prof[:])[:,0]
 
-flag_maxd = 0.08
-flag_SNRmin = 0.8
+flag_maxd = 0.07
+flag_SNRmin = 0.9
 f_rick_c = 10
 t_rick_shift = 0.15
 
@@ -401,7 +418,7 @@ def extract_sync(isrc,dir_src,flag_maxd,flag_SNRmin,f_rick_c,t_rick_shift,bands,
 #bands = np.array([[1/30,1/15],[1/18,1/12],[1/15,1/10],[1/12,1/7],[1/10,1/5]])
 bands = np.array([[1/10,1/5], [1/12,1/7] ,[1/15,1/10], [1/30,1/15]])
 dir_input = dir_project + 'ModelValidate/template/input/'
-for isrc in range(55,64):
+for isrc in range(start,end+1):
     time0 = time.time()
 #for isrc in range(1,2):
     dir_src = dir_project + 'ModelValidate/src'+str(isrc)+'/'
