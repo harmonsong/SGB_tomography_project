@@ -13,7 +13,7 @@ import pandas as pd
 
 #%%
 flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
-flag_repick = 0 # 0-- no new h5 trans; 1-- yes
+flag_repick = 1 # 0-- no new h5 trans; 1-- yes
 flag_forward = 1 # 0-- no forward; 1-- yes
 num_refs = 8 # sort with nearst num_refs centroid
 flag_partrition = 1 # plot partition
@@ -99,13 +99,15 @@ key_ds = []
 #filename = dir_project+info_basic['rdir_inv_BFGS']+'repick_1.txt'
 filename = dir_project+'repick_1.txt'
 nums = np.loadtxt(filename,dtype='int')  
-#nums = [23,54,56,55,80]
+nums = [244]
 #nums = range(0,600)
 nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
+    #print(key_subwork.split('--')[0])
     if key_subwork.split('--')[0] in nums:
         key_ds.append(key_subwork)
-key_ds = info_basic['key_subworks']
+#print(nums)
+#key_ds = info_basic['key_subworks']
 
 
 """
@@ -161,10 +163,10 @@ if flag_repick == 1:
         #amp_or = data['ds_linear'][:][0][:,f<fmax]
         ds_remove = data['ds_remove'][:][0]
         ds_linear = data['ds_linear'][:][0]
-        #amp = plotlib.smooth_ds(ds_remove)
-        #amp_or = plotlib.smooth_ds(ds_linear)
-        amp = ds_remove
-        amp_or = ds_linear
+        amp = plotlib.smooth_ds(ds_remove)
+        amp_or = plotlib.smooth_ds(ds_linear)
+        #amp = ds_remove
+        #amp_or = ds_linear
         amp = amp[:,np.logical_and(f>fmin,f<fmax)]
         amp = amp[np.logical_and(c>cmin,c<cmax),:]
         amp_or = amp_or[:,np.logical_and(f>fmin,f<fmax)]
