@@ -1,0 +1,15 @@
+xtick.labelsize: 15
+ytick.labelsize: 15
+font.size: 15
+axes.titlesize : 10
+axes.labelsize : 20
+lines.linewidth : 1
+lines.markersize : 20
+legend.fontsize: 15
+#mathtext.fontset: custom
+#mathtext.rm = Arial
+#mathtext.it = Arial:italic
+axes.linewidth:1.2
+#font.family = sans-serif 
+#font.sans-serif = Arial 
+
