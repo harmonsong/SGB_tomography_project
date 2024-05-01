@@ -99,7 +99,7 @@ key_ds = []
 #filename = dir_project+info_basic['rdir_inv_BFGS']+'repick_1.txt'
 filename = dir_project+'repick_1.txt'
 nums = np.loadtxt(filename,dtype='int')  
-nums = [244]
+nums = [277]
 #nums = range(0,600)
 nums = [str(x) for x in nums]
 for key_subwork in info_basic['key_subworks']:
@@ -164,6 +164,7 @@ if flag_repick == 1:
         ds_remove = data['ds_remove'][:][0]
         ds_linear = data['ds_linear'][:][0]
         amp = plotlib.smooth_ds(ds_remove)
+        amp = plotlib.smooth_ds(ds_remove,level_c  =10)
         amp_or = plotlib.smooth_ds(ds_linear)
         #amp = ds_remove
         #amp_or = ds_linear
