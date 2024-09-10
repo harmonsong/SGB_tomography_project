@@ -96,6 +96,7 @@ dir_partition = dir_project + info_basic['rdir_partition']
 
 
 key_ds = []
+"""
 #filename = dir_project+info_basic['rdir_inv_BFGS']+'repick_1.txt'
 filename = dir_project+'repick_1.txt'
 nums = np.loadtxt(filename,dtype='int')  
@@ -106,6 +107,8 @@ for key_subwork in info_basic['key_subworks']:
     #print(key_subwork.split('--')[0])
     if key_subwork.split('--')[0] in nums:
         key_ds.append(key_subwork)
+"""
+key_ds = info_basic['key_subworks']
 #print(nums)
 #key_ds = info_basic['key_subworks']
 
