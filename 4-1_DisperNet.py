@@ -13,11 +13,12 @@ import pandas as pd
 
 #%%
 flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
-flag_repick = 1 # 0-- no new h5 trans; 1-- yes
+flag_repick = 0 # 0-- no new h5 trans; 1-- yes
 flag_forward = 1 # 0-- no forward; 1-- yes
 num_refs = 1 # sort with nearst num_refs centroid
 flag_partrition = 1 # plot partition
 flag_plot_or = 0    # plot non-remove FJ
+flag_smooth = 1     # smooth dispersion curve
 r_near = 1        # add nearest num_near dispersion picks
 
 #%%
@@ -166,13 +167,17 @@ if flag_repick == 1:
         #amp_or = data['ds_linear'][:][0][:,f<fmax]
         ds_remove = data['ds_remove'][:][0]
         ds_linear = data['ds_linear'][:][0]
-        """
-        amp = plotlib.smooth_ds(ds_remove)
-        amp = plotlib.smooth_ds(ds_remove,level_c  =10)
-        amp_or = plotlib.smooth_ds(ds_linear)
-        """
-        amp = ds_remove
-        amp_or = ds_linear
+
+        if flag_smooth == 1:
+            amp = plotlib.smooth_ds(ds_remove)
+            amp = plotlib.smooth_ds(ds_remove,level_c  =10)
+            amp_or = plotlib.smooth_ds(ds_linear)
+        else:
+            amp = ds_remove
+            amp_or = ds_linear
+
+
+
         amp = amp[:,np.logical_and(f>fmin,f<fmax)]
         amp = amp[np.logical_and(c>cmin,c<cmax),:]
         amp_or = amp_or[:,np.logical_and(f>fmin,f<fmax)]
