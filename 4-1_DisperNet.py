@@ -12,13 +12,13 @@ import pandas as pd
 
 
 #%%
-flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
-flag_repick = 0 # 0-- no new h5 trans; 1-- yes
-flag_forward = 1 # 0-- no forward; 1-- yes
+flag_project = 0 # 0--regular ; 1--repartition; 2--voronoi
+flag_repick = 1 # 0-- no new h5 trans; 1-- yes
+flag_forward = 0 # 0-- no forward; 1-- yes
 num_refs = 1 # sort with nearst num_refs centroid
 flag_partrition = 1 # plot partition
 flag_plot_or = 0    # plot non-remove FJ
-flag_smooth = 1     # smooth dispersion curve
+flag_smooth = 0     # smooth dispersion curve
 r_near = 1        # add nearest num_near dispersion picks
 
 #%%
@@ -95,9 +95,9 @@ dir_ds = dir_project + info_basic['rdir_ds']
 dir_partition = dir_project + info_basic['rdir_partition']
 #key_ds  = info_basic['key_subworks_repick']
 
-
-key_ds = []
 """
+key_ds = []
+
 #filename = dir_project+info_basic['rdir_inv_BFGS']+'repick_1.txt'
 filename = dir_project+'repick_1.txt'
 nums = np.loadtxt(filename,dtype='int')  
@@ -110,6 +110,7 @@ for key_subwork in info_basic['key_subworks']:
         key_ds.append(key_subwork)
 """
 key_ds = info_basic['key_subworks']
+key_ds = ['56-19']
 #print(nums)
 #key_ds = info_basic['key_subworks']
 
