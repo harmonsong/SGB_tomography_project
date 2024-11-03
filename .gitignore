@@ -11,6 +11,7 @@ Structure
 *.jpg
 tempCodeRunnerFile*
 */__pycache__*
+paper*
 
 project*
 
