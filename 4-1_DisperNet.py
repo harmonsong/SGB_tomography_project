@@ -12,14 +12,14 @@ import pandas as pd
 
 
 #%%
-flag_project = 0 # 0--regular ; 1--repartition; 2--voronoi
+flag_project = 1 # 0--regular ; 1--repartition; 2--voronoi
 flag_repick = 1 # 0-- no new h5 trans; 1-- yes
 flag_forward = 0 # 0-- no forward; 1-- yes
 num_refs = 1 # sort with nearst num_refs centroid
-flag_partrition = 1 # plot partition
+flag_partrition = 0 # plot partition
 flag_plot_or = 0    # plot non-remove FJ
-flag_smooth = 0     # smooth dispersion curve
-r_near = 1        # add nearest num_near dispersion picks
+flag_smooth = 1     # smooth dispersion curve
+r_near = 0        # add nearest num_near dispersion picks
 
 #%%
 if flag_project == 0:
@@ -32,6 +32,7 @@ elif flag_project == 2:
 with open(file_project, 'r', encoding='utf-8') as f:
     proj = yaml.load(f.read(), Loader=yaml.FullLoader)
 name_project = proj['name']
+#name_project = 'project_repartition_v4.0/output_repar_v9.5_03--10-16Hz/'
 
 #%%
 with open('0_config.yml', 'r', encoding='utf-8') as f:
@@ -110,7 +111,7 @@ for key_subwork in info_basic['key_subworks']:
         key_ds.append(key_subwork)
 """
 key_ds = info_basic['key_subworks']
-key_ds = ['56-19']
+key_ds = ['277--26-10']
 #print(nums)
 #key_ds = info_basic['key_subworks']
 
@@ -147,7 +148,7 @@ for key in key_ds:
 
 #%%
 fmax = 30
-fmin = 1
+fmin = 3
 cmax = 2
 cmin = 0.25
 inputfile = dir_disp_pick + 'h5/'
@@ -170,8 +171,9 @@ if flag_repick == 1:
         ds_linear = data['ds_linear'][:][0]
 
         if flag_smooth == 1:
-            amp = plotlib.smooth_ds(ds_remove)
-            amp = plotlib.smooth_ds(ds_remove,level_c  =10)
+            #amp = plotlib.smooth_ds(ds_remove)
+            #amp = plotlib.smooth_ds(ds_remove,level_c  =12)
+            amp = plotlib.smooth_ds(ds_remove,level_c  =20,level_f=12)
             amp_or = plotlib.smooth_ds(ds_linear)
         else:
             amp = ds_remove
@@ -213,6 +215,7 @@ if flag_forward == 1:
         for file in files:
             key_fund.append(file[file.find('_')+1:file.find('curve')])
     over_curve_path = dir_project + info_basic['rdir_inv_BFGS']+'disp_model/'
+
 
 #%%    
 """
